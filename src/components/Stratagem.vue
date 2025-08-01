@@ -6,11 +6,13 @@ defineProps({
 });
 
 const emit = defineEmits(["randomize"]);
+
+const base = import.meta.env.BASE_URL;
 </script>
 
 <template>
   <div class="stratagem" @click="emit('randomize', index)">
-    <img :src="imageSrc" alt="stratagem image" />
+    <img :src="base + imageSrc" alt="stratagem image" />
     <p>{{ text }}</p>
   </div>
 </template>
