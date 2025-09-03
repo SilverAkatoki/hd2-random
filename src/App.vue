@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import stratagem from './components/Stratagem.vue';
 import { getRandomCombinations } from './random';
 import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
+import { filename } from './random-dict/filename';
 
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
@@ -48,6 +49,19 @@ const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
   return isNewSupport && hasOtherSupport;
 };
 
+// 不缓存图片卡飞了
+const preloadImages = () => {
+  const images = Object.entries(filename).map(([_, value]) => `/public/stratagems${value}`);
+  
+  images.forEach(src => {
+    const img = new Image();
+    img.src = import.meta.env.BASE_URL + src;
+  });
+};
+
+onMounted(() => {
+  preloadImages();
+});
 </script>
 
 <template>
@@ -68,7 +82,7 @@ const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
       </label>
     </div>
     <div class="stratagem-container">
-      <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
+      <stratagem v-for="(item, index) in stratagems" :imageSrc="'/public/stratagems/' + item.imgSrc" :text="item.text"
         :index="index" @randomize="randomizeSingleStratagem" />
     </div>
     <button class="random-button" @click="randomizeStratagems">随机</button>
