@@ -51,7 +51,7 @@ const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
 
 // 不缓存图片卡飞了
 const preloadImages = () => {
-  const images = Object.entries(filename).map(([_, value]) => `/public/stratagems${value}`);
+  const images = Object.entries(filename).map(([_, value]) => `/stratagems${value}`);
   
   images.forEach(src => {
     const img = new Image();
@@ -82,7 +82,7 @@ onMounted(() => {
       </label>
     </div>
     <div class="stratagem-container">
-      <stratagem v-for="(item, index) in stratagems" :imageSrc="'/public/stratagems/' + item.imgSrc" :text="item.text"
+      <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
         :index="index" @randomize="randomizeSingleStratagem" />
     </div>
     <button class="random-button" @click="randomizeStratagems">随机</button>
