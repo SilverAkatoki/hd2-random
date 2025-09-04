@@ -51,7 +51,7 @@ const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
 
 // 不缓存图片卡飞了
 const preloadImages = () => {
-  const images = Object.entries(filename).map(([_, value]) => `/stratagems${value}`);
+  const images = Object.entries(filename).map(([_, value]) => `stratagems/${value}`);
   
   images.forEach(src => {
     const img = new Image();
