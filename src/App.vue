@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import stratagem from './components/Stratagem.vue';
 import { getRandomCombinations } from './random';
 import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
 import { filename } from './random-dict/filename';
+import ToggleButton from './components/ToggleButton.vue';
 
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
@@ -52,7 +53,6 @@ const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
 // 不缓存图片卡飞了
 const preloadImages = () => {
   const images = Object.entries(filename).map(([_, value]) => `stratagems/${value}`);
-  
   images.forEach(src => {
     const img = new Image();
     img.src = import.meta.env.BASE_URL + src;
@@ -66,26 +66,64 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1 style="color: #FFEB00">随机战备</h1>
-    <div class="options" style="display: flex; flex-direction: column; align-items: baseline;">
-      <label style="color: white; user-select: none;">
-        <input type="checkbox" v-model="allowSingleBackpack" style="transform: translateY(12.5%) ;" />
-        只允许一个背包战备（包含支援武器的弹药背包）
-      </label>
-      <label style="color: white; user-select: none; margin-left: 16px;">
-        <input type="checkbox" v-model="allowSingleSupportWeapon" style="transform: translateY(12.5%) ;" />
-        只允许一个支援武器
-      </label>
-      <label style="color: white; user-select: none; margin-left: 16px;">
-        <input type="checkbox" v-model="allowVehicle" style="transform: translateY(12.5%) ;" />
-        允许载具战备
-      </label>
+    <div class="top-bar"></div>
+    <div class="main-container">
+      <div class="sub-container">
+        <div class="title-container">
+          <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" />
+          <span>Helldivers 2 全随机战备</span>
+          <img src="/title.svg" style="height: 32px; margin-left: 10px;" />
+        </div>
+        <div class="rules-setting">
+          <div class="rules-title-container">
+            <span class="rules-title">限制条件</span>
+          </div>
+          <div class="settings-container">
+            <div class="setting-container">
+              <div class="setting-description-container">
+                <span class="setting-title">只允许占据一个背包位</span>
+                <span class="setting-description">包括背包战备与包含弹药背包的支援武器</span>
+              </div>
+              <div class="setting-button-container">
+                <toggle-button v-model:valueModel="allowSingleBackpack" />
+              </div>
+            </div>
+            <div class="setting-container">
+              <div class="setting-description-container">
+                <span class="setting-title">只允许一个支援武器战备</span>
+                <span class="setting-description">也就是常说的「三号位」</span>
+              </div>
+              <div class="setting-button-container">
+                <toggle-button v-model:valueModel="allowSingleSupportWeapon" />
+              </div>
+            </div>
+            <div class="setting-container">
+              <div class="setting-description-container">
+                <span class="setting-title">允许载具</span>
+                <span class="setting-description">总有人不会驾驶，对吧</span>
+              </div>
+              <div class="setting-button-container">
+                <toggle-button v-model:valueModel="allowVehicle" />
+              </div>
+            </div>
+            <div class="setting-container">
+              <div class="setting-description-container">
+                <span class="setting-title">战备过滤菜单</span>
+                <div>
+                  <span class="setting-description">当前已在随机结果中排除</span>
+                  <span class="setting-description" style="color: #FEE70F;"> 0 </span>
+                  <span class="setting-description">个战备</span>
+                </div>
+              </div>
+              <div class="setting-button-container">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img class="background-img" src="/background.webp" />
     </div>
-    <div class="stratagem-container">
-      <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
-        :index="index" @randomize="randomizeSingleStratagem" />
-    </div>
-    <button class="random-button" @click="randomizeStratagems">随机</button>
+    <div class="bottom-bar"></div>
   </main>
 </template>
 
@@ -93,25 +131,125 @@ onMounted(() => {
 main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-div.stratagem-container {
+div.top-bar,
+div.bottom-bar {
+  height: 50px;
+  background-color: #333;
+}
+
+div.main-container {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin: 16px 0;
+  align-items: center;
+  height: calc(100vh - 100px);
+
+  >img.background-img {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 100px);
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.5);
+  }
 }
 
-div.options {
-  margin-bottom: 16px;
+div.sub-container {
+  width: 40%;
+  height: 90%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 2px solid #333;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-button.random-button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  font-size: 16px;
-  cursor: pointer;
+div.rules-setting {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+div.rules-title-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: 24px;
+  background-color: #333;
+
+  >span.rules-title {
+    margin-left: 20px;
+    font-size: 16px;
+    color: #FDFDFD;
+    translate: 0 -1px;
+    letter-spacing: 1px;
+  }
+}
+
+div.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 20px;
+
+  >span {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FEE70F;
+  }
+}
+
+div.settings-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+div.setting-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 80px;
+  align-items: center;
+  background-color: black;
+  border-bottom: 2px solid #222;
+}
+
+div.setting-description-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px;
+  width: 70%;
+  height: 100%;
+}
+
+div.setting-button-container {
+  margin-right: 20px;
+}
+
+span.setting-title {
+  font-size: 18px;
+  color: #FDFDFD;
+  letter-spacing: 1px;
+}
+
+span.setting-description {
+  font-size: 14px;
+  color: #AAAAAA;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
 }
 </style>
