@@ -10,6 +10,7 @@ const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
 const allowVehicle = ref(true);
+const banedStratagemCount = ref(0);
 
 const randomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
@@ -110,15 +111,18 @@ onMounted(() => {
               <div class="setting-description-container">
                 <span class="setting-title">战备过滤菜单</span>
                 <div>
-                  <span class="setting-description">当前已在随机结果中排除</span>
-                  <span class="setting-description" style="color: #FEE70F;"> 0 </span>
-                  <span class="setting-description">个战备</span>
+                  <span class="setting-description">当前已在随机结果中排除 </span>
+                  <span class="setting-description" style="color: #FEE70F;"> {{ banedStratagemCount }} </span>
+                  <span class="setting-description"> 个战备</span>
                 </div>
               </div>
               <div class="setting-button-container">
+                <button class="filter-button">打开</button>
               </div>
             </div>
           </div>
+        </div>
+        <div class="stratagems-container">
         </div>
       </div>
       <img class="background-img" src="/background.webp" />
@@ -162,7 +166,7 @@ div.main-container {
 
 div.sub-container {
   width: 40%;
-  height: 90%;
+  height: 95%;
   background-color: rgba(0, 0, 0, 0.6);
   border: 2px solid #333;
   display: flex;
@@ -220,9 +224,9 @@ div.setting-container {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 80px;
+  height: 75px;
   align-items: center;
-  background-color: black;
+  background-color: #0C0C0C;
   border-bottom: 2px solid #222;
 }
 
@@ -252,4 +256,34 @@ span.setting-description {
   margin-top: 4px;
   letter-spacing: 0.5px;
 }
+
+button.filter-button {
+  width: 120px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  border: 2px solid #333;
+
+  color: #FDFDFD;
+  font-style: medium;
+
+  transition: all 0.2s ease;
+}
+
+button.filter-button:hover {
+  background-color: #211F06;
+  border-color: #FEE70F;
+  box-shadow: 0 0 15px 5px rgba(254, 231, 15, 0.35);
+  ;
+}
+
+div.stratagems-container {
+  margin-top: 10px;
+  width: 85%;
+  height: 20%;
+  background-image: url(/stripes_gray.svg);
+  background-size: 250%;
+}
+
 </style>
