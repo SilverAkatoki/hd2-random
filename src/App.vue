@@ -258,6 +258,8 @@ span.setting-description {
 }
 
 button.filter-button {
+  margin-right: 37px;
+
   width: 120px;
   height: 36px;
   font-size: 16px;
