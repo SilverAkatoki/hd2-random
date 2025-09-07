@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, onMounted } from 'vue';
 import stratagem from './components/Stratagem.vue';
 import { getRandomCombinations } from './random';
 import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
@@ -123,6 +123,18 @@ onMounted(() => {
           </div>
         </div>
         <div class="stratagems-container">
+        </div>
+        <div class="random-button-container">
+          <div>
+            <div class="random-button" @click="randomizeStratagems">
+              <span>全部随机</span>
+              <img src="/dice.png" />
+            </div>
+          </div>
+          <div style="user-select: none;">
+            <span style="color: #FEE70F;">点击战备图标</span>
+            <span style="color: white;">以进行单个战备的随机</span>
+          </div>
         </div>
       </div>
       <img class="background-img" src="/background.webp" />
@@ -277,7 +289,7 @@ button.filter-button:hover {
   background-color: #211F06;
   border-color: #FEE70F;
   box-shadow: 0 0 15px 5px rgba(254, 231, 15, 0.35);
-  ;
+  color: #FEE70F;
 }
 
 div.stratagems-container {
@@ -288,4 +300,61 @@ div.stratagems-container {
   background-size: 250%;
 }
 
+div.random-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 85%;
+  height: 50px;
+  margin-top: 10px;
+  gap: 12px;
+}
+
+div.random-button {
+  width: 200px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid #A1920B;
+
+
+  background-color: #282302;
+  background-image: url(/stripes_gray.svg);
+  background-size: 500%;
+  background-blend-mode: multiply;
+
+  transition: all 0.2s ease;
+
+  display: flex;
+  align-items: center;
+
+  >span {
+    user-select: none;
+    margin-left: 20px;
+    color: #FEE70F;
+    font-size: 20px;
+    letter-spacing: 1px;
+
+    font-weight: 500;
+  }
+  >img {
+    user-select: none;
+    height: 24px;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+}
+
+div.random-button:hover {
+  background: #FEE70F;
+  box-shadow: 0 0 15px 5px #FEE70F;
+
+  >span {
+    color: black;
+  }
+
+  >img {
+    filter: brightness(0);
+  }
+}
 </style>
