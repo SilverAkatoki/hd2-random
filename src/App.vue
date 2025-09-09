@@ -139,6 +139,10 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
             <div class="random-button" @click="randomizeStratagems">
               <span>全部随机</span>
               <img src="/dice.png" />
+              <div class="corner top-left"></div>
+              <div class="corner top-right"></div>
+              <div class="corner bottom-left"></div>
+              <div class="corner bottom-right"></div>
             </div>
           </div>
           <div style="user-select: none;">
@@ -345,10 +349,13 @@ div.random-button {
   background-size: 500%;
   background-blend-mode: multiply;
 
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   display: flex;
   align-items: center;
+
+  position: relative;
+  z-index: 1;
 
   >span {
     user-select: none;
@@ -366,6 +373,46 @@ div.random-button {
     margin-left: auto;
     margin-right: 10px;
   }
+
+  >div.corner {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: none;
+    border: #FEE70F solid 2px;
+    z-index: 2;
+
+    transition: all 0.2s ease;
+  }
+
+
+  >div.corner.top-left {
+    top: -2px;
+    left: -2px;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  >div.corner.top-right {
+    top: -2px;
+    right: -2px;
+    border-bottom: none;
+    border-left: none;
+  }
+
+  >div.corner.bottom-left {
+    bottom: -2px;
+    left: -2px;
+    border-top: none;
+    border-right: none;
+  }
+
+  >div.corner.bottom-right {
+    bottom: -2px;
+    right: -2px;
+    border-top: none;
+    border-left: none;
+  }
 }
 
 div.random-button:hover {
@@ -379,6 +426,11 @@ div.random-button:hover {
 
   >img {
     filter: brightness(0);
+  }
+
+  >div.corner {
+    width: 30px;
+    height: 20px;
   }
 }
 </style>
