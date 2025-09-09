@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import stratagem from './components/Stratagem.vue';
 import { getRandomCombinations } from './random';
 import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
 import { filename } from './random-dict/filename';
 import ToggleButton from './components/ToggleButton.vue';
+import stratagem from './components/Stratagem.vue';
 
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
@@ -123,6 +123,7 @@ onMounted(() => {
           </div>
         </div>
         <div class="stratagems-container">
+          <stratagem imageSrc="stratagems/blue/support-weapon/rl77airburstrocketlauncher.svg" />
         </div>
         <div class="random-button-container">
           <div>
@@ -337,6 +338,7 @@ div.random-button {
 
     font-weight: 500;
   }
+
   >img {
     user-select: none;
     height: 24px;
