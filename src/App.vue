@@ -347,7 +347,9 @@ div.random-button {
 
 div.random-button:hover {
   background: #FEE70F;
+  border-color: #FEE70F;
   box-shadow: 0 0 15px 5px #FEE70F;
+
 
   >span {
     color: black;
