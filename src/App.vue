@@ -123,7 +123,7 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
                 </div>
               </div>
               <div class="setting-button-container">
-                <button class="filter-button">打开</button>
+                <button class="filter-button" :disabled="true">打开</button>
               </div>
             </div>
           </div>
@@ -295,11 +295,17 @@ button.filter-button {
   transition: all 0.2s ease;
 }
 
-button.filter-button:hover {
+button.filter-button:hover:not(:disabled) {
   background-color: #211F06;
   border-color: #FEE70F;
   box-shadow: 0 0 15px 5px rgba(254, 231, 15, 0.35);
   color: #FEE70F;
+}
+
+button.filter-button:disabled {
+  border-color: #555;
+  color: #555;
+  cursor: not-allowed;
 }
 
 div.stratagems-outer-container {
