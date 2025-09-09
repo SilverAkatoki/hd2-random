@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { getRandomCombinations } from './random';
 import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
 import { filename } from './random-dict/filename';
@@ -63,6 +63,12 @@ const preloadImages = () => {
 onMounted(() => {
   preloadImages();
 });
+
+// 更改设置后重新随机
+watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
+  randomizeStratagems();
+});
+
 </script>
 
 <template>
@@ -122,8 +128,11 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="stratagems-container">
-          <stratagem imageSrc="stratagems/blue/support-weapon/rl77airburstrocketlauncher.svg" />
+        <div class="stratagems-outer-container">
+          <div class="stratagems-inner-container">
+            <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
+              :index="index" @randomize="randomizeSingleStratagem" />
+          </div>
         </div>
         <div class="random-button-container">
           <div>
@@ -293,12 +302,24 @@ button.filter-button:hover {
   color: #FEE70F;
 }
 
-div.stratagems-container {
+div.stratagems-outer-container {
   margin-top: 10px;
   width: 85%;
-  height: 20%;
+  height: 25%;
   background-image: url(/stripes_gray.svg);
   background-size: 250%;
+
+  display: flex;
+  align-items: top;
+  justify-content: center;
+
+  >div.stratagems-inner-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 20px;
+  }
 }
 
 div.random-button-container {
@@ -351,7 +372,6 @@ div.random-button:hover {
   background: #FEE70F;
   border-color: #FEE70F;
   box-shadow: 0 0 15px 5px #FEE70F;
-
 
   >span {
     color: black;
