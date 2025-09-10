@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { getRandomCombinations } from './random';
-import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dict/stratagem-type';
+import { getRandomCombinations, randomizeSingleStratagem } from './random';
 import { filename } from './random-dict/filename';
+
 import ToggleButton from './components/ToggleButton.vue';
-import stratagem from './components/Stratagem.vue';
+import Stratagem from './components/Stratagem.vue';
 import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
 
 const stratagems = ref(getRandomCombinations());
@@ -14,52 +14,12 @@ const allowVehicle = ref(true);
 const banedStratagemCount = ref(0);
 const hasEnabledBannedStratagem = ref(false);
 
-const randomizeStratagems = () => {
+const reRandomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
 };
 
-const randomizeSingleStratagem = (index: number) => {
-  let newStratagem;
-  let attempts = 0;
-
-  do {
-    const allCombinations = getRandomCombinations(false, false, allowVehicle.value);
-    newStratagem = allCombinations[Math.floor(Math.random() * allCombinations.length)];
-
-    const otherKeys = stratagems.value
-      .map((item, i) => i !== index ? item.ID : null)
-      .filter(key => key !== null);
-
-    const hasConflict = otherKeys.includes(newStratagem.ID) ||
-      (allowSingleBackpack.value && hasBackpackConflict(newStratagem.ID, otherKeys)) ||
-      (allowSingleSupportWeapon.value && hasSupportWeaponConflict(newStratagem.ID, otherKeys));
-
-    if (!hasConflict) break;
-
-  } while (++attempts < 100);
-
-  stratagems.value[index] = newStratagem;
-};
-
-const hasBackpackConflict = (newKey: string, otherKeys: string[]) => {
-  const isNewBackpack = backpack.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
-  const hasOtherBackpack = otherKeys.some(key => backpack.includes(key) || supportWeaponWithBackpack.includes(key));
-  return isNewBackpack && hasOtherBackpack;
-};
-
-const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]) => {
-  const isNewSupport = supportWeapon.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
-  const hasOtherSupport = otherKeys.some(key => supportWeapon.includes(key) || supportWeaponWithBackpack.includes(key));
-  return isNewSupport && hasOtherSupport;
-};
-
-// 不缓存图片卡飞了
-const preloadImages = () => {
-  const images = Object.entries(filename).map(([_, value]) => `stratagems/${value}`);
-  images.forEach(src => {
-    const img = new Image();
-    img.src = import.meta.env.BASE_URL + src;
-  });
+const reRandomizeSingleStratagem = (index: number) => {
+  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
 };
 
 const closeStratagemSelector = () => {
@@ -73,15 +33,21 @@ onMounted(() => {
 });
 
 // 更改设置后重新随机
-watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
-  randomizeStratagems();
-});
+watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], reRandomizeStratagems);
 
+// 不缓存图片卡飞了
+const preloadImages = () => {
+  const images = Object.entries(filename).map(([_, value]) => `stratagems/${value}`);
+  images.forEach(src => {
+    const img = new Image();
+    img.src = import.meta.env.BASE_URL + src;
+  });
+};
 </script>
 
 <template>
   <main>
-    <transition>
+    <transition name="fade">
       <banned-stratagem-selector v-if="hasEnabledBannedStratagem" />
     </transition>
     <div class="top-bar"></div>
@@ -143,12 +109,12 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
         <div class="stratagems-outer-container">
           <div class="stratagems-inner-container">
             <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
-              :index="index" @randomize="randomizeSingleStratagem" />
+              :index="index" @randomize="reRandomizeSingleStratagem" />
           </div>
         </div>
         <div class="random-button-container">
           <div>
-            <div class="random-button" @click="randomizeStratagems">
+            <div class="random-button" @click="reRandomizeStratagems">
               <span>全部随机</span>
               <img src="/dice.png" />
               <div class="corner top-left"></div>
@@ -360,7 +326,6 @@ div.random-button {
   cursor: pointer;
   border: 2px solid #A1920B;
 
-
   background-color: #282302;
   background-image: url(/stripes_gray.svg);
   background-size: 500%;
@@ -401,7 +366,6 @@ div.random-button {
 
     transition: all 0.2s ease;
   }
-
 
   >div.corner.top-left {
     top: -2px;
@@ -449,5 +413,13 @@ div.random-button:hover {
     width: 30px;
     height: 20px;
   }
+}
+
+.fade-enter-active {
+  transition: opacity 0.1s ease;
+}
+
+.fade-enter-from {
+  opacity: 0;
 }
 </style>

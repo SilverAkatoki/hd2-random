@@ -90,9 +90,5 @@ div.stratagem:hover {
       border-color: white;
     }
   }
-
-  >p {
-    color: #E0E0E0;
-  }
 }
 </style>

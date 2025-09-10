@@ -21,7 +21,7 @@ export const getRandomCombinations = (
   allowSingleBackpack: boolean = false,
   allowSingleSupportWeapon: boolean = false,
   allowVehicle: boolean = true
-) => {
+): { ID: string; imgSrc: string; text: string }[] => {
   const keys = Object.keys(filename).filter((key) => key in stratagemName);
   const combinations: { ID: string; imgSrc: string; text: string }[] = [];
 
@@ -61,4 +61,45 @@ export const getRandomCombinations = (
   }
 
   return combinations;
+};
+
+export const randomizeSingleStratagem = (
+  index: number,
+  stratagems: { ID: string; imgSrc: string; text: string }[],
+  allowSingleBackpack: boolean,
+  allowSingleSupportWeapon: boolean,
+  allowVehicle: boolean
+): { ID: string; imgSrc: string; text: string } => {
+  let newStratagem;
+  let attempts = 0;
+
+  do {
+    const allCombinations = getRandomCombinations(false, false, allowVehicle);
+    newStratagem = allCombinations[Math.floor(Math.random() * allCombinations.length)];
+
+    const otherKeys = stratagems
+      .map((item, i) => i !== index ? item.ID : null)
+      .filter(key => key !== null);
+
+    const hasConflict = otherKeys.includes(newStratagem.ID) ||
+      (allowSingleBackpack && hasBackpackConflict(newStratagem.ID, otherKeys)) ||
+      (allowSingleSupportWeapon && hasSupportWeaponConflict(newStratagem.ID, otherKeys));
+
+    if (!hasConflict) break;
+
+  } while (++attempts < 100);
+
+  return newStratagem;
+};
+
+const hasBackpackConflict = (newKey: string, otherKeys: string[]): boolean => {
+  const isNewBackpack = backpack.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
+  const hasOtherBackpack = otherKeys.some(key => backpack.includes(key) || supportWeaponWithBackpack.includes(key));
+  return isNewBackpack && hasOtherBackpack;
+};
+
+const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]): boolean => {
+  const isNewSupport = supportWeapon.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
+  const hasOtherSupport = otherKeys.some(key => supportWeapon.includes(key) || supportWeaponWithBackpack.includes(key));
+  return isNewSupport && hasOtherSupport;
 };
