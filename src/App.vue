@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { getRandomCombinations, randomizeSingleStratagem } from './random';
 import { filename } from './random-dict/filename';
+import { vehicle } from './random-dict/stratagem-type';
 
 import ToggleButton from './components/ToggleButton.vue';
 import Stratagem from './components/Stratagem.vue';
@@ -11,8 +12,9 @@ const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
 const allowVehicle = ref(true);
-const banedStratagemCount = ref(0);
 const hasEnabledBannedStratagem = ref(false);
+
+let banedStratagems = ref<string[]>([]);
 
 const reRandomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
@@ -30,10 +32,23 @@ const closeStratagemSelector = () => {
 
 onMounted(() => {
   preloadImages();
+
+  if (allowVehicle.value) {
+    banedStratagems.value = banedStratagems.value.concat(vehicle);
+  }
 });
 
 // 更改设置后重新随机
 watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], reRandomizeStratagems);
+
+// 排除载具更新战备
+watch(allowVehicle, () => {
+  if (allowVehicle.value) {
+    banedStratagems.value = banedStratagems.value.concat(vehicle);
+  } else {
+    banedStratagems.value = banedStratagems.value.filter((stratagem: string) => !vehicle.includes(stratagem));
+  }
+});
 
 // 不缓存图片卡飞了
 const preloadImages = () => {
@@ -96,7 +111,7 @@ const preloadImages = () => {
                 <span class="setting-title">战备过滤菜单</span>
                 <div>
                   <span class="setting-description">当前已在随机结果中排除 </span>
-                  <span class="setting-description" style="color: #FEE70F;"> {{ banedStratagemCount }} </span>
+                  <span class="setting-description" style="color: #FEE70F;"> {{ banedStratagems.length }} </span>
                   <span class="setting-description"> 个战备</span>
                 </div>
               </div>
@@ -282,11 +297,17 @@ button.filter-button {
   transition: all 0.2s ease;
 }
 
-button.filter-button:hover {
+button.filter-button:hover:not(:disabled) {
   background-color: #211F06;
   border-color: #FEE70F;
   box-shadow: 0 0 15px 5px rgba(254, 231, 15, 0.35);
   color: #FEE70F;
+}
+
+button.filter-button:disabled {
+  border-color: #555;
+  color: #555;
+  cursor: not-allowed;
 }
 
 div.stratagems-outer-container {
