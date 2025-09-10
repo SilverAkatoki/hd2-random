@@ -5,12 +5,14 @@ import { backpack, supportWeaponWithBackpack, supportWeapon } from './random-dic
 import { filename } from './random-dict/filename';
 import ToggleButton from './components/ToggleButton.vue';
 import stratagem from './components/Stratagem.vue';
+import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
 
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
 const allowVehicle = ref(true);
 const banedStratagemCount = ref(0);
+const hasEnabledBannedStratagem = ref(false);
 
 const randomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
@@ -60,6 +62,12 @@ const preloadImages = () => {
   });
 };
 
+const closeStratagemSelector = () => {
+  if (hasEnabledBannedStratagem.value) {
+    hasEnabledBannedStratagem.value = false;
+  }
+};
+
 onMounted(() => {
   preloadImages();
 });
@@ -73,8 +81,12 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
 
 <template>
   <main>
+    <transition>
+      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" />
+    </transition>
     <div class="top-bar"></div>
-    <div class="main-container">
+    <div class="main-container" @click="closeStratagemSelector"
+      :style='{ "filter": (hasEnabledBannedStratagem ? "brightness(50%)" : "none") }'>
       <div class="sub-container">
         <div class="title-container">
           <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" />
@@ -123,7 +135,7 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
                 </div>
               </div>
               <div class="setting-button-container">
-                <button class="filter-button">打开</button>
+                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">打开</button>
               </div>
             </div>
           </div>
@@ -151,7 +163,6 @@ watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], () => {
           </div>
         </div>
       </div>
-      <img class="background-img" src="/background.webp" />
     </div>
     <div class="bottom-bar"></div>
   </main>
@@ -173,21 +184,25 @@ div.bottom-bar {
 }
 
 div.main-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 100px);
 
-  >img.background-img {
-    position: absolute;
-    top: 50px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 100px);
-    object-fit: cover;
-    z-index: -1;
-    filter: brightness(0.5);
-  }
+  transition: filter 0.3s ease;
+}
+
+div.main-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/background.webp);
+  z-index: -1;
+  filter: brightness(0.5);
 }
 
 div.sub-container {
@@ -237,6 +252,7 @@ div.title-container {
     font-size: 32px;
     font-weight: bold;
     color: #FEE70F;
+    user-select: none;
   }
 }
 
@@ -264,6 +280,7 @@ div.setting-description-container {
   margin-left: 20px;
   width: 70%;
   height: 100%;
+  user-select: none;
 }
 
 div.setting-button-container {
