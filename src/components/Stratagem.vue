@@ -11,7 +11,6 @@ const base = import.meta.env.BASE_URL;
 </script>
 
 <template>
-
   <div class="stratagem" @click="emit('randomize', index)">
     <div class="img-container">
       <div class="top" />

@@ -63,7 +63,7 @@ const preloadImages = () => {
 <template>
   <main>
     <transition name="fade">
-      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" />
+      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" @close="hasEnabledBannedStratagem = false" />
     </transition>
     <div class="top-bar"></div>
     <div class="main-container" @click="closeStratagemSelector"
@@ -149,7 +149,7 @@ const preloadImages = () => {
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 main {
   display: flex;
   flex-direction: column;
