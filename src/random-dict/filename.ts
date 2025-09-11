@@ -1,4 +1,4 @@
-export const filename: { [key: string]: string } = {
+export const filename: { readonly [key: string]: string } = {
   ad334guarddog: "blue/backpack/ad334guarddog.svg",
   axlas5guarddogrover: "blue/backpack/axlas5guarddogrover.svg",
   axtx13guarddogdogbreath: "blue/backpack/axtx13guarddogdogbreath.svg",

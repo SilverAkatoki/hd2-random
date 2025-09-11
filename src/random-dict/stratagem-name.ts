@@ -1,4 +1,4 @@
-export const stratagemName: { [key: string]: string } = {
+export const stratagemName: { readonly [key: string]: string } = {
   ad334guarddog: "「护卫犬」",
   axlas5guarddogrover: "「护卫犬」漫游车",
   axtx13guarddogdogbreath: "「护卫犬」腐息",
