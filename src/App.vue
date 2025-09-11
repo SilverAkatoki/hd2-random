@@ -11,7 +11,7 @@ import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
-const allowVehicle = ref(true);
+const allowVehicle = ref(false);
 const hasEnabledBannedStratagem = ref(false);
 
 let banedStratagems = ref<string[]>([]);
@@ -41,12 +41,22 @@ onMounted(() => {
 // 更改设置后重新随机
 watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], reRandomizeStratagems);
 
-// 排除载具更新战备
-watch(allowVehicle, () => {
-  if (allowVehicle.value) {
-    banedStratagems.value = banedStratagems.value.concat(vehicle);
+watch(banedStratagems, () => {
+  const allVehicleBanned = vehicle.every(v => banedStratagems.value.includes(v));
+  allowVehicle.value = !allVehicleBanned;
+});
+
+// 只在切换“允许载具”时批量禁用/启用所有载具
+watch(allowVehicle, (val) => {
+  if (!val) {
+    for (const v of vehicle) {
+      if (!banedStratagems.value.includes(v)) {
+        banedStratagems.value.push(v);
+      }
+    }
   } else {
-    banedStratagems.value = banedStratagems.value.filter((stratagem: string) => !vehicle.includes(stratagem));
+    // 允许载具时，从 banedStratagems 移除所有载具
+    banedStratagems.value = banedStratagems.value.filter(str => !vehicle.includes(str));
   }
 });
 
@@ -63,16 +73,17 @@ const preloadImages = () => {
 <template>
   <main>
     <transition name="fade">
-      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" @close="hasEnabledBannedStratagem = false" />
+      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" @close="hasEnabledBannedStratagem = false"
+        v-model="banedStratagems" />
     </transition>
     <div class="top-bar"></div>
     <div class="main-container" @click="closeStratagemSelector"
       :style='{ "filter": (hasEnabledBannedStratagem ? "brightness(50%)" : "none") }'>
       <div class="sub-container">
         <div class="title-container">
-          <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" />
+          <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" draggable="false" />
           <span>Helldivers 2 全随机战备</span>
-          <img src="/title.svg" style="height: 32px; margin-left: 10px;" />
+          <img src="/title.svg" style="height: 32px; margin-left: 10px;" draggable="false" />
         </div>
         <div class="rules-setting">
           <div class="rules-title-container">
@@ -124,14 +135,14 @@ const preloadImages = () => {
         <div class="stratagems-outer-container">
           <div class="stratagems-inner-container">
             <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
-              :index="index" @randomize="reRandomizeSingleStratagem" />
+              :index="index" @click="reRandomizeSingleStratagem" />
           </div>
         </div>
         <div class="random-button-container">
           <div>
             <div class="random-button" @click="reRandomizeStratagems">
               <span>全部随机</span>
-              <img src="/dice.png" />
+              <img src="/dice.png" draggable="false" />
               <div class="corner top-left"></div>
               <div class="corner top-right"></div>
               <div class="corner bottom-left"></div>

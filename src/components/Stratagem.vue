@@ -5,16 +5,16 @@ defineProps<{
   index?: number,
 }>();
 
-const emit = defineEmits(["randomize"]);
+const emit = defineEmits(["click"]);
 
 const base = import.meta.env.BASE_URL;
 </script>
 
 <template>
-  <div class="stratagem" @click="emit('randomize', index)">
+  <div class="stratagem" @click="emit('click', index)">
     <div class="img-container">
       <div class="top" />
-      <img :src="base + imageSrc" alt="stratagem image" />
+      <img :src="base + imageSrc" alt="stratagem image" draggable="false" />
       <div class="bottom" />
     </div>
 
@@ -49,6 +49,11 @@ div.stratagem {
     z-index: 1;
 
     position: relative;
+
+    >img {
+      user-select: none;
+
+    }
 
     >div.top,
     >div.bottom {
@@ -89,5 +94,11 @@ div.stratagem:hover {
       border-color: white;
     }
   }
+}
+
+div.stratagem.banned {
+  filter: brightness(0.4) grayscale(0.5);
+  pointer-events: auto;
+  transition: filter 0.15s;
 }
 </style>
