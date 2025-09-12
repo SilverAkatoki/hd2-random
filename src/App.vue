@@ -6,6 +6,7 @@ import { filename } from './random-dict/filename';
 import ToggleButton from './components/ToggleButton.vue';
 import Stratagem from './components/Stratagem.vue';
 import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
+import LiberButton from './components/LiberButton.vue';
 
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
@@ -123,14 +124,12 @@ const preloadImages = () => {
         </div>
         <div class="random-button-container">
           <div>
-            <div class="random-button" @click="reRandomizeStratagems">
-              <span>全部随机</span>
-              <img src="/dice.png" draggable="false" />
-              <div class="corner top-left"></div>
-              <div class="corner top-right"></div>
-              <div class="corner bottom-left"></div>
-              <div class="corner bottom-right"></div>
-            </div>
+            <liber-button mainColor="#A1920B" hoverColor="#FEE70F" @click="reRandomizeStratagems">
+              <div class="random-button-inner">
+                <span style="color: #FEE70F; font-size: 20px; font-weight: 500;">全部随机</span>
+                <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
+              </div>
+            </liber-button>
           </div>
           <div style="user-select: none;">
             <span style="color: #FEE70F;">点击战备图标</span>
@@ -348,25 +347,16 @@ div.random-button::before {
   transition: none;
 }
 
-div.random-button {
-  width: 200px;
-  height: 36px;
-  font-size: 16px;
-  cursor: pointer;
-  border: 2px solid #A1920B;
-
-  background: none;
-
-  transition: all 0.2s ease;
+div.random-button-inner {
+  width: 100%;
+  height: 100%;
 
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 
   position: relative;
-
-  >* {
-    position: relative;
-  }
 
   >span {
     user-select: none;
@@ -384,69 +374,6 @@ div.random-button {
     margin-left: auto;
     margin-right: 10px;
   }
-
-  >div.corner {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background: none;
-    border: #FEE70F solid 2px;
-    z-index: 2;
-
-    transition: all 0.2s ease;
-  }
-
-  >div.corner.top-left {
-    top: -2px;
-    left: -2px;
-    border-bottom: none;
-    border-right: none;
-  }
-
-  >div.corner.top-right {
-    top: -2px;
-    right: -2px;
-    border-bottom: none;
-    border-left: none;
-  }
-
-  >div.corner.bottom-left {
-    bottom: -2px;
-    left: -2px;
-    border-top: none;
-    border-right: none;
-  }
-
-  >div.corner.bottom-right {
-    bottom: -2px;
-    right: -2px;
-    border-top: none;
-    border-left: none;
-  }
-}
-
-div.random-button:hover {
-  background: #FEE70F;
-  border-color: #FEE70F;
-  box-shadow: 0 0 15px 5px #FEE70F;
-
-  >span {
-    color: black;
-  }
-
-  >img {
-    filter: brightness(0);
-  }
-
-  >div.corner {
-    width: 30px;
-    height: 20px;
-  }
-}
-
-div.random-button:hover::before {
-  background-color: #FEE70F;
-  background-image: none;
 }
 
 .fade-enter-active {

@@ -2,6 +2,7 @@
 import Stratagem from './Stratagem.vue';
 import { attack, defense, support } from '../random-dict/stratagem-type';
 import { filename } from '../random-dict/filename';
+import LiberButton from './LiberButton.vue';
 
 
 const bannedStratagems = defineModel<string[]>({ default: () => [] });
@@ -18,6 +19,7 @@ const toggleBan = (key: string) => {
     return;
   }
   if (idx !== -1) {
+    // 直接赋值会破坏响应式？
     bannedStratagems.value.splice(idx, 1);
   } else {
     bannedStratagems.value.push(key);
@@ -29,7 +31,6 @@ const toggleBan = (key: string) => {
   <div class="banned-stratagem-selector" @click.right.prevent="emit('close')">
     <div class="title-container">
       <span>战备选择菜单</span>
-      <button @click="emit('close')">✕</button>
     </div>
     <div class="stratagem-lists">
       <div class="stratagem-list">
@@ -53,6 +54,14 @@ const toggleBan = (key: string) => {
             :class="{ banned: bannedStratagems!.includes(key) }" @click="toggleBan(key)" />
         </div>
       </div>
+    </div>
+    <div class="bottom-container">
+      <liber-button mainColor="#D5D5D5" hoverColor="#CBCBCE" @click="emit('close')">
+        <div class=" liber-button-inner">
+          <span style="margin: 0 0 0 20px; font-weight: bold; font-size: 28px;">✓</span>
+          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">确认</span>
+        </div>
+      </liber-button>
     </div>
   </div>
 </template>
@@ -126,8 +135,7 @@ div.title-container::before {
 }
 
 div.stratagem-lists {
-  margin: 20px;
-  margin-top: 0;
+  margin: 0 20px 0 20px;
   overflow: hidden;
 
   >div.stratagem-list {
@@ -152,6 +160,53 @@ div.stratagem-lists {
         width: 7%;
       }
     }
+  }
+}
+
+div.bottom-container {
+  width: 100%;
+  height: 15%;
+
+  background-color: black;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.liber-button {
+  width: 120px;
+  margin: 20px;
+}
+
+div.liber-button-inner {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  position: relative;
+
+  >span {
+    user-select: none;
+    margin-left: auto;
+    margin-right: 20px;
+    color: #CBCBCE;
+    font-size: 20px;
+    letter-spacing: 1px;
+
+    font-weight: 500;
+  }
+
+  >img {
+    user-select: none;
+    height: 24px;
+
+    margin-left: 10px;
   }
 }
 </style>
