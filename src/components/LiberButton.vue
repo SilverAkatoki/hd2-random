@@ -1,5 +1,5 @@
 <template>
-  <div class="liber-button" :style="{
+  <div class="liber-button" :class="{ disabled }" :style="{
     '--main-color': mainColor,
     '--hover-color': hoverColor
   }" @click="onClick">
@@ -14,15 +14,25 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  mainColor?: string
-  hoverColor?: string
+const props = defineProps<{
+  mainColor?: string,
+  hoverColor?: string,
+  disabled?: boolean
 }>();
 const emit = defineEmits(['click']);
-const onClick = () => emit('click');
+
+const onClick = (e: MouseEvent) => { if (!props.disabled) emit('click') }
 </script>
 
 <style scoped>
+.liber-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.7) brightness(0.7);
+  pointer-events: none;
+  box-shadow: none;
+}
+
 .liber-button {
   width: 200px;
   height: 36px;

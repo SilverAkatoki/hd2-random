@@ -56,8 +56,20 @@ const toggleBan = (key: string) => {
       </div>
     </div>
     <div class="bottom-container">
+      <liber-button mainColor="#D5D5D5" hoverColor="#CBCBCE" @click="bannedStratagems = []"
+        :disabled="bannedStratagems.length == 0">
+        <div class="liber-button-inner">
+          <svg width="28" height="28" viewBox="0 0 28 28" style="margin: 0 0 0 20px;" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="12" stroke="#CBCBCE" stroke-width="2" fill="none" />
+            <path d="M14 4a10 10 0 1 1-7.07 2.93" stroke="#CBCBCE" stroke-width="2" fill="none" />
+            <polygon points="7,2 11,5 6,7" fill="#CBCBCE" />
+          </svg>
+          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">重置</span>
+        </div>
+      </liber-button>
       <liber-button mainColor="#D5D5D5" hoverColor="#CBCBCE" @click="emit('close')">
-        <div class=" liber-button-inner">
+        <div class="liber-button-inner">
           <span style="margin: 0 0 0 20px; font-weight: bold; font-size: 28px;">✓</span>
           <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">确认</span>
         </div>
@@ -177,7 +189,7 @@ div.bottom-container {
 
 .liber-button {
   width: 120px;
-  margin: 20px;
+  margin-right: 20px;
 }
 
 div.liber-button-inner {
