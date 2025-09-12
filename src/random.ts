@@ -4,7 +4,6 @@ import {
   backpack,
   supportWeapon,
   supportWeaponWithBackpack,
-  vehicle,
 } from "./random-dict/stratagem-type";
 
 // Fisher-Yates
@@ -20,7 +19,7 @@ const shuffle = <T>(array: T[]): T[] => {
 export const getRandomCombinations = (
   allowSingleBackpack: boolean = false,
   allowSingleSupportWeapon: boolean = false,
-  allowVehicle: boolean = true
+  bannedStratagems: string[] = []
 ): { ID: string; imgSrc: string; text: string }[] => {
   const keys = Object.keys(filename).filter((key) => key in stratagemName);
   const combinations: { ID: string; imgSrc: string; text: string }[] = [];
@@ -49,7 +48,7 @@ export const getRandomCombinations = (
       supportWeaponAdded = true;
     }
 
-    if (!allowVehicle && vehicle.includes(key)) {
+    if (bannedStratagems.includes(key)) {
       continue;
     }
 
@@ -68,13 +67,13 @@ export const randomizeSingleStratagem = (
   stratagems: { ID: string; imgSrc: string; text: string }[],
   allowSingleBackpack: boolean,
   allowSingleSupportWeapon: boolean,
-  allowVehicle: boolean
+  bannedStratagems: string[]
 ): { ID: string; imgSrc: string; text: string } => {
   let newStratagem;
   let attempts = 0;
 
   do {
-    const allCombinations = getRandomCombinations(false, false, allowVehicle);
+    const allCombinations = getRandomCombinations(false, false, bannedStratagems);
     newStratagem = allCombinations[Math.floor(Math.random() * allCombinations.length)];
 
     const otherKeys = stratagems

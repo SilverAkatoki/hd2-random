@@ -2,7 +2,6 @@
 import { ref, onMounted, watch } from 'vue';
 import { getRandomCombinations, randomizeSingleStratagem } from './random';
 import { filename } from './random-dict/filename';
-import { vehicle } from './random-dict/stratagem-type';
 
 import ToggleButton from './components/ToggleButton.vue';
 import Stratagem from './components/Stratagem.vue';
@@ -11,17 +10,16 @@ import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
 const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
-const allowVehicle = ref(false);
 const hasEnabledBannedStratagem = ref(false);
 
-let banedStratagems = ref<string[]>([]);
+let bannedStratagems = ref<string[]>([]);
 
 const reRandomizeStratagems = () => {
-  stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
+  stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
 };
 
 const reRandomizeSingleStratagem = (index: number) => {
-  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value, allowVehicle.value);
+  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
 };
 
 const closeStratagemSelector = () => {
@@ -32,33 +30,27 @@ const closeStratagemSelector = () => {
 
 onMounted(() => {
   preloadImages();
-
-  if (allowVehicle.value) {
-    banedStratagems.value = banedStratagems.value.concat(vehicle);
-  }
 });
 
 // 更改设置后重新随机
-watch([allowSingleBackpack, allowSingleSupportWeapon, allowVehicle], reRandomizeStratagems);
+watch([allowSingleBackpack, allowSingleSupportWeapon], reRandomizeStratagems);
 
-watch(banedStratagems, () => {
-  const allVehicleBanned = vehicle.every(v => banedStratagems.value.includes(v));
-  allowVehicle.value = !allVehicleBanned;
-});
 
-// 只在切换“允许载具”时批量禁用/启用所有载具
-watch(allowVehicle, (val) => {
-  if (!val) {
-    for (const v of vehicle) {
-      if (!banedStratagems.value.includes(v)) {
-        banedStratagems.value.push(v);
-      }
-    }
+// 更改筛选后重新随机
+let previousBannedStratagems: string[] = [];
+watch(hasEnabledBannedStratagem, (x: Boolean) => {
+  if (x) {
+    previousBannedStratagems = [...bannedStratagems.value];
   } else {
-    // 允许载具时，从 banedStratagems 移除所有载具
-    banedStratagems.value = banedStratagems.value.filter(str => !vehicle.includes(str));
+    const hasChanged =
+      previousBannedStratagems.length !== bannedStratagems.value.length ||
+      previousBannedStratagems.some(str => !bannedStratagems.value.includes(str));
+    if (hasChanged) {
+      reRandomizeStratagems();
+    }
   }
 });
+
 
 // 不缓存图片卡飞了
 const preloadImages = () => {
@@ -74,7 +66,7 @@ const preloadImages = () => {
   <main>
     <transition name="fade">
       <banned-stratagem-selector v-if="hasEnabledBannedStratagem" @close="hasEnabledBannedStratagem = false"
-        v-model="banedStratagems" />
+        v-model="bannedStratagems" />
     </transition>
     <div class="top-bar"></div>
     <div class="main-container" @click="closeStratagemSelector"
@@ -110,19 +102,10 @@ const preloadImages = () => {
             </div>
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">允许载具</span>
-                <span class="setting-description">总有人不会驾驶，对吧</span>
-              </div>
-              <div class="setting-button-container">
-                <toggle-button v-model:valueModel="allowVehicle" />
-              </div>
-            </div>
-            <div class="setting-container">
-              <div class="setting-description-container">
                 <span class="setting-title">战备过滤菜单</span>
                 <div>
                   <span class="setting-description">当前已在随机结果中排除 </span>
-                  <span class="setting-description" style="color: #FEE70F;"> {{ banedStratagems.length }} </span>
+                  <span class="setting-description" style="color: #FEE70F;"> {{ bannedStratagems.length }} </span>
                   <span class="setting-description"> 个战备</span>
                 </div>
               </div>
@@ -322,7 +305,7 @@ button.filter-button:disabled {
 }
 
 div.stratagems-outer-container {
-  margin-top: 10px;
+  margin-top: 50px;
   width: 85%;
   height: 25%;
   background-image: url(/stripes_gray.svg);
@@ -351,6 +334,20 @@ div.random-button-container {
   gap: 12px;
 }
 
+div.random-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #282302;
+  background-image: url(/stripes_gray.svg);
+  background-size: 500%;
+  background-blend-mode: multiply;
+  /* 弄到伪类里就能用 transform 转了 */
+  transform: scaleX(-1);
+  transition: none;
+}
+
 div.random-button {
   width: 200px;
   height: 36px;
@@ -358,18 +355,18 @@ div.random-button {
   cursor: pointer;
   border: 2px solid #A1920B;
 
-  background-color: #282302;
-  background-image: url(/stripes_gray.svg);
-  background-size: 500%;
-  background-blend-mode: multiply;
+  background: none;
 
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   display: flex;
   align-items: center;
 
   position: relative;
-  z-index: 1;
+
+  >* {
+    position: relative;
+  }
 
   >span {
     user-select: none;
@@ -445,6 +442,11 @@ div.random-button:hover {
     width: 30px;
     height: 20px;
   }
+}
+
+div.random-button:hover::before {
+  background-color: #FEE70F;
+  background-image: none;
 }
 
 .fade-enter-active {

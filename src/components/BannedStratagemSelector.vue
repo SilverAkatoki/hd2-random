@@ -9,8 +9,16 @@ const emit = defineEmits(["close"]);
 
 
 const toggleBan = (key: string) => {
-  if (bannedStratagems.value.includes(key)) {
-    bannedStratagems.value = bannedStratagems.value.filter(k => k !== key);
+  const idx = bannedStratagems.value.indexOf(key);
+  if (
+    idx === -1 &&
+    attack.length + defense.length + support.length - bannedStratagems.value.length <= 4
+  ) {
+    alert("可用战备过少！");
+    return;
+  }
+  if (idx !== -1) {
+    bannedStratagems.value.splice(idx, 1);
   } else {
     bannedStratagems.value.push(key);
   }
@@ -18,7 +26,7 @@ const toggleBan = (key: string) => {
 </script>
 
 <template>
-  <div class="banned-stratagem-selector">
+  <div class="banned-stratagem-selector" @click.right.prevent="emit('close')">
     <div class="title-container">
       <span>战备选择菜单</span>
       <button @click="emit('close')">✕</button>
