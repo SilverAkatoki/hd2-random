@@ -149,6 +149,7 @@ main {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  user-select: none;
 }
 
 div.top-bar,

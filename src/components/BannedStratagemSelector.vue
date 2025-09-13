@@ -75,7 +75,6 @@ const toggleBan = (key: string) => {
           <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">确认</span>
         </div>
       </liber-button>
-      <liber-button colorA="#D5D5D5" colorB="#CBCBCE">abc</liber-button>
     </div>
   </div>
 </template>
@@ -90,7 +89,7 @@ div.banned-stratagem-selector {
   /* top: 50%;
   left: 50%; 
   transform: translate(-50%, -50%);  */
-  
+
   top: 0;
   left: 0;
   right: 0;
@@ -137,8 +136,9 @@ div.title-container::before {
 }
 
 div.stratagem-lists {
-  margin: 0 20px 0 20px;
+  margin: 20px 20px 0 20px;
   overflow: hidden;
+  overflow-y: scroll;
 
   >div.stratagem-list {
     gap: 10px;
@@ -148,7 +148,7 @@ div.stratagem-lists {
       color: #DDD;
       font-size: 20px;
       letter-spacing: 2px;
-      margin: 10px 0 10px 0;
+      margin-bottom: 10px;
       user-select: none;
     }
 
@@ -157,6 +157,7 @@ div.stratagem-lists {
       flex-direction: row;
       flex-wrap: wrap;
       gap: 10px;
+      margin-bottom: 10px;
 
       >* {
         width: 7%;
