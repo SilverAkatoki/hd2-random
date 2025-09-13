@@ -56,24 +56,26 @@ const toggleBan = (key: string) => {
       </div>
     </div>
     <div class="bottom-container">
-      <liber-button mainColor="#D5D5D5" hoverColor="#CBCBCE" @click="bannedStratagems = []"
+      <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="bannedStratagems = []"
         :disabled="bannedStratagems.length == 0">
         <div class="liber-button-inner">
-          <svg width="28" height="28" viewBox="0 0 28 28" style="margin: 0 0 0 20px;" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <circle cx="14" cy="14" r="12" stroke="#CBCBCE" stroke-width="2" fill="none" />
-            <path d="M14 4a10 10 0 1 1-7.07 2.93" stroke="#CBCBCE" stroke-width="2" fill="none" />
-            <polygon points="7,2 11,5 6,7" fill="#CBCBCE" />
+          <svg xmlns="http://www.w3.org/2000/svg" role="img" width="30px" height="30px" viewBox="0 0 24 24"
+            aria-labelledby="refreshIconTitle" stroke="#CBCBCE" stroke-width="2" stroke-linecap="square"
+            stroke-linejoin="miter" fill="none" color="#CBCBCE" style="margin: 0 0 0 20px;">
+            <polyline points="22 12 19 15 16 12" />
+            <path
+              d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14" />
           </svg>
           <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">重置</span>
         </div>
       </liber-button>
-      <liber-button mainColor="#D5D5D5" hoverColor="#CBCBCE" @click="emit('close')">
+      <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="emit('close')">
         <div class="liber-button-inner">
-          <span style="margin: 0 0 0 20px; font-weight: bold; font-size: 28px;">✓</span>
+          <span style="margin: 0 0 0 20px; color: #CBCBCE; font-weight: bold; font-size: 26px;">✓</span>
           <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">确认</span>
         </div>
       </liber-button>
+      <liber-button colorA="#D5D5D5" colorB="#CBCBCE">abc</liber-button>
     </div>
   </div>
 </template>
@@ -81,16 +83,24 @@ const toggleBan = (key: string) => {
 <style scoped lang="css">
 div.banned-stratagem-selector {
   position: absolute;
-  top: 50%;
-  left: 50%;
 
   width: 70vw;
   height: 70vh;
 
-  transform: translate(-50%, -50%);
+  /* top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);  */
+  
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+
+
   background-color: #111;
   border: 2px solid #646464;
-  z-index: 1000;
+  z-index: 1;
 
   display: flex;
   flex-direction: column;
@@ -111,26 +121,6 @@ div.title-container {
     font-size: 24px;
     letter-spacing: 2px;
     user-select: none;
-  }
-
-  >button {
-    background: none;
-    outline: none;
-    border: none;
-
-    width: 5%;
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    right: 0;
-    z-index: 1;
-  }
-
-  >button:hover {
-    color: #FEE70F;
-    filter: drop-shadow(0 0 5px rgba(254, 231, 15, 0.35));
   }
 }
 
@@ -187,7 +177,7 @@ div.bottom-container {
   justify-content: flex-end;
 }
 
-.liber-button {
+div.liber-button {
   width: 120px;
   margin-right: 20px;
 }
@@ -202,23 +192,6 @@ div.liber-button-inner {
   justify-content: space-between;
 
   position: relative;
-
-  >span {
-    user-select: none;
-    margin-left: auto;
-    margin-right: 20px;
-    color: #CBCBCE;
-    font-size: 20px;
-    letter-spacing: 1px;
-
-    font-weight: 500;
-  }
-
-  >img {
-    user-select: none;
-    height: 24px;
-
-    margin-left: 10px;
-  }
+  border-style: none;
 }
 </style>

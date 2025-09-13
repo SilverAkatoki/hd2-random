@@ -1,7 +1,23 @@
+<script setup lang="ts">
+const props = defineProps<{
+  colorA?: string,
+  colorB?: string,
+  disabled?: boolean
+}>();
+
+const emit = defineEmits(['click']);
+
+const onClick = () => {
+  if (!props.disabled) {
+    emit('click');
+  }
+};
+</script>
+
 <template>
   <div class="liber-button" :class="{ disabled }" :style="{
-    '--main-color': mainColor,
-    '--hover-color': hoverColor
+    '--color-a': colorA,
+    '--color-b': colorB
   }" @click="onClick">
     <div class="slot-content">
       <slot />
@@ -13,19 +29,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-  mainColor?: string,
-  hoverColor?: string,
-  disabled?: boolean
-}>();
-const emit = defineEmits(['click']);
 
-const onClick = (e: MouseEvent) => { if (!props.disabled) emit('click') }
-</script>
 
-<style scoped>
-.liber-button.disabled {
+<style scoped lang="css">
+div.liber-button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   filter: grayscale(0.7) brightness(0.7);
@@ -33,20 +40,68 @@ const onClick = (e: MouseEvent) => { if (!props.disabled) emit('click') }
   box-shadow: none;
 }
 
-.liber-button {
+div.liber-button {
   width: 200px;
   height: 36px;
   cursor: pointer;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--color-a);
   background: none;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
+
+  >* {
+    position: relative;
+    z-index: 1;
+  }
+
+  >div.corner {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: none;
+    border: var(--color-a) solid 2px;
+    z-index: 2;
+    transition: all 0.2s ease;
+  }
+
+  >div.corner.top-left {
+    top: -2px;
+    left: -2px;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  >div.corner.top-right {
+    top: -2px;
+    right: -2px;
+    border-bottom: none;
+    border-left: none;
+  }
+
+  >div.corner.bottom-left {
+    bottom: -2px;
+    left: -2px;
+    border-top: none;
+    border-right: none;
+  }
+
+  >div.corner.bottom-right {
+    bottom: -2px;
+    right: -2px;
+    border-top: none;
+    border-left: none;
+  }
+
+  div.slot-content {
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.liber-button::before {
+div.liber-button::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -61,71 +116,23 @@ const onClick = (e: MouseEvent) => { if (!props.disabled) emit('click') }
   transition: background-color 0.2s;
 }
 
-.liber-button>* {
-  position: relative;
-  z-index: 1;
+div.liber-button:hover {
+  border-color: var(--color-b);
+  box-shadow: 0 0 15px 5px var(--color-b);
+
+  >div.corner {
+    width: 30px;
+    height: 20px;
+    border-color: var(--color-b);
+  }
+
+  div.slot-content {
+    filter: invert(1) hue-rotate(180deg);
+  }
 }
 
-.slot-content {
-  width: 100%;
-  height: 100%;
-}
-
-.liber-button:hover .slot-content {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-.liber-button>.corner {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: none;
-  border: var(--main-color) solid 2px;
-  z-index: 2;
-  transition: all 0.2s ease;
-}
-
-.liber-button>.corner.top-left {
-  top: -2px;
-  left: -2px;
-  border-bottom: none;
-  border-right: none;
-}
-
-.liber-button>.corner.top-right {
-  top: -2px;
-  right: -2px;
-  border-bottom: none;
-  border-left: none;
-}
-
-.liber-button>.corner.bottom-left {
-  bottom: -2px;
-  left: -2px;
-  border-top: none;
-  border-right: none;
-}
-
-.liber-button>.corner.bottom-right {
-  bottom: -2px;
-  right: -2px;
-  border-top: none;
-  border-left: none;
-}
-
-.liber-button:hover {
-  border-color: var(--hover-color);
-  box-shadow: 0 0 15px 5px var(--hover-color);
-}
-
-.liber-button:hover::before {
-  background-color: var(--hover-color);
+div.liber-button:hover::before {
+  background-color: var(--color-b);
   background-image: none;
-}
-
-.liber-button:hover>.corner {
-  width: 30px;
-  height: 20px;
-  border-color: var(--hover-color);
 }
 </style>

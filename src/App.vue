@@ -124,7 +124,7 @@ const preloadImages = () => {
         </div>
         <div class="random-button-container">
           <div>
-            <liber-button mainColor="#A1920B" hoverColor="#FEE70F" @click="reRandomizeStratagems">
+            <liber-button colorA="#A1920B" colorB="#FEE70F" @click="reRandomizeStratagems">
               <div class="random-button-inner">
                 <span style="color: #FEE70F; font-size: 20px; font-weight: 500;">全部随机</span>
                 <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
@@ -181,7 +181,7 @@ div.main-container::before {
 
 div.sub-container {
   width: 40%;
-  height: 95%;
+  height: 85%;
   background-color: rgba(0, 0, 0, 0.6);
   border: 2px solid #333;
   display: flex;
@@ -304,9 +304,9 @@ button.filter-button:disabled {
 }
 
 div.stratagems-outer-container {
-  margin-top: 50px;
+  margin-top: 10px;
   width: 85%;
-  height: 25%;
+  height: 28%;
   background-image: url(/stripes_gray.svg);
   background-size: 250%;
 
