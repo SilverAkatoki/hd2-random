@@ -2,12 +2,13 @@
 import Stratagem from './Stratagem.vue';
 import { attack, defense, support } from '../random-dict/stratagem-type';
 import { filename } from '../random-dict/filename';
+
 import LiberButton from './LiberButton.vue';
+import { ref, onMounted } from 'vue';
+import { type Option } from '../type';
 
-
-const bannedStratagems = defineModel<string[]>({ default: () => [] });
+const bannedStratagems = ref<string[]>([]);
 const emit = defineEmits(["close"]);
-
 
 const toggleBan = (key: string) => {
   const idx = bannedStratagems.value.indexOf(key);
@@ -19,12 +20,35 @@ const toggleBan = (key: string) => {
     return;
   }
   if (idx !== -1) {
-    // 直接赋值会破坏响应式？
     bannedStratagems.value.splice(idx, 1);
   } else {
     bannedStratagems.value.push(key);
   }
 };
+
+const stratagemListsContainer = ref<Option<HTMLElement>>(null);
+const scrollbarInner = ref<Option<HTMLElement>>(null);
+
+const updateScrollbar = () => {
+  const container = stratagemListsContainer.value!;
+  const inner = scrollbarInner.value!;
+
+  const scrollTop = container.scrollTop;
+  const scrollHeight = container.scrollHeight;
+  const clientHeight = container.clientHeight;
+
+  const scrollbarHeight = (clientHeight / scrollHeight) * clientHeight;
+  const scrollOffset = (scrollTop / (scrollHeight - clientHeight)) * (clientHeight - scrollbarHeight);
+
+  inner.style.height = `${scrollbarHeight}px`;
+  inner.style.transform = `translateY(${scrollOffset}px)`;
+};
+
+onMounted(() => {
+  if (stratagemListsContainer.value && scrollbarInner.value) {
+    setTimeout(updateScrollbar, 100); // 不延后更新就没法在第一次进入的时候更新长度
+  }
+});
 </script>
 
 <template>
@@ -32,29 +56,39 @@ const toggleBan = (key: string) => {
     <div class="title-container">
       <span>战备选择菜单</span>
     </div>
+
     <div class="stratagem-lists">
-      <div class="stratagem-list">
-        <span>进攻</span>
-        <div class="stratagem-container">
-          <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
-            :class="{ banned: bannedStratagems!.includes(key) }" @click="toggleBan(key)" />
+      <div class="stratagem-lists-container" ref="stratagemListsContainer" @scroll="updateScrollbar">
+        <div class="stratagem-list">
+          <span>进攻</span>
+          <div class="stratagem-container">
+            <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+          </div>
+        </div>
+        <div class="stratagem-list">
+          <span>支援</span>
+          <div class="stratagem-container">
+            <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+          </div>
+        </div>
+        <div class="stratagem-list">
+          <span>防御</span>
+          <div class="stratagem-container">
+            <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+          </div>
         </div>
       </div>
-      <div class="stratagem-list">
-        <span>支援</span>
-        <div class="stratagem-container">
-          <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
-            :class="{ banned: bannedStratagems!.includes(key) }" @click="toggleBan(key)" />
-        </div>
-      </div>
-      <div class="stratagem-list">
-        <span>防御</span>
-        <div class="stratagem-container">
-          <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
-            :class="{ banned: bannedStratagems!.includes(key) }" @click="toggleBan(key)" />
+      <div class="scrollbar-outer">
+        <div class="scrollbar-inner" ref="scrollbarInner">
+          <div class="scrollbar-inner-top" />
+          <div class="scrollbar-inner-bottom" />
         </div>
       </div>
     </div>
+
     <div class="bottom-container">
       <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="bannedStratagems = []"
         :disabled="bannedStratagems.length == 0">
@@ -86,16 +120,11 @@ div.banned-stratagem-selector {
   width: 70vw;
   height: 70vh;
 
-  /* top: 50%;
-  left: 50%; 
-  transform: translate(-50%, -50%);  */
-
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
-
 
   background-color: #111;
   border: 2px solid #646464;
@@ -138,9 +167,21 @@ div.title-container::before {
 div.stratagem-lists {
   margin: 20px 20px 0 20px;
   overflow: hidden;
-  overflow-y: scroll;
+  position: relative;
 
-  >div.stratagem-list {
+  div.stratagem-lists-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  div.stratagem-lists-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  div.stratagem-list {
     gap: 10px;
 
     >span {
@@ -195,4 +236,43 @@ div.liber-button-inner {
   position: relative;
   border-style: none;
 }
+
+div.scrollbar-outer {
+  position: absolute;
+  height: 100%;
+  width: 15px;
+  right: 0;
+  top: 0;
+  background-color: #3e3e3e;
+  box-sizing: border-box;
+}
+
+div.scrollbar-inner {
+  position: absolute;
+  width: 70%;
+  height: 0;
+
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  background-color: #bababa;
+}
+
+div.scrollbar-inner-top,
+div.scrollbar-inner-bottom {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #FEE70F;
+}
+
+div.scrollbar-inner-top {
+  top: 0;
+}
+
+div.scrollbar-inner-bottom {
+  bottom: 0;
+}
+
 </style>
