@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getRandomCombinations, randomizeSingleStratagem } from './random';
 import { filename } from './random-dict/filename';
 
@@ -14,6 +15,8 @@ const allowSingleSupportWeapon = ref(false);
 const hasEnabledBannedStratagem = ref(false);
 
 let bannedStratagems = ref<string[]>([]);
+
+const { t } = useI18n();
 
 const reRandomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
@@ -75,18 +78,18 @@ const preloadImages = () => {
       <div class="sub-container">
         <div class="title-container">
           <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" draggable="false" />
-          <span>Helldivers 2 全随机战备</span>
+          <span>{{ t('app.title') }}</span>
           <img src="/title.svg" style="height: 32px; margin-left: 10px;" draggable="false" />
         </div>
         <div class="rules-setting">
           <div class="rules-title-container">
-            <span class="rules-title">限制条件</span>
+            <span class="rules-title">{{ t('settings.title') }}</span>
           </div>
           <div class="settings-container">
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">只允许占据一个背包位</span>
-                <span class="setting-description">包括背包战备与包含弹药背包的支援武器</span>
+                <span class="setting-title">{{ t('settings.singleBackpack.title') }}</span>
+                <span class="setting-description">{{ t('settings.singleBackpack.description') }}</span>
               </div>
               <div class="setting-button-container">
                 <toggle-button v-model:valueModel="allowSingleBackpack" />
@@ -94,8 +97,8 @@ const preloadImages = () => {
             </div>
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">只允许一个支援武器战备</span>
-                <span class="setting-description">也就是常说的「三号位」</span>
+                <span class="setting-title">{{ t('settings.singleSupportWeapon.title') }}</span>
+                <span class="setting-description">{{ t('settings.singleSupportWeapon.description') }}</span>
               </div>
               <div class="setting-button-container">
                 <toggle-button v-model:valueModel="allowSingleSupportWeapon" />
@@ -103,15 +106,15 @@ const preloadImages = () => {
             </div>
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">战备过滤菜单</span>
+                <span class="setting-title">{{ t('settings.stratagemFilter.title') }}</span>
                 <div>
-                  <span class="setting-description">当前已在随机结果中排除 </span>
+                  <span class="setting-description">{{ t('settings.stratagemFilter.currentlyBanned') }} </span>
                   <span class="setting-description" style="color: #FEE70F;"> {{ bannedStratagems.length }} </span>
-                  <span class="setting-description"> 个战备</span>
+                  <span class="setting-description"> {{ t('settings.stratagemFilter.bannedCount') }}</span>
                 </div>
               </div>
               <div class="setting-button-container">
-                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">打开</button>
+                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">{{ t('settings.stratagemFilter.openButton') }}</button>
               </div>
             </div>
           </div>
@@ -126,14 +129,13 @@ const preloadImages = () => {
           <div>
             <liber-button colorA="#A1920B" colorB="#FEE70F" @click="reRandomizeStratagems">
               <div class="random-button-inner">
-                <span style="color: #FEE70F; font-size: 20px; font-weight: 500;">全部随机</span>
+                <span style="color: #FEE70F; font-size: 20px; font-weight: 500;">{{ t('app.randomizeAll') }}</span>
                 <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
               </div>
             </liber-button>
           </div>
           <div style="user-select: none;">
-            <span style="color: #FEE70F;">点击战备图标</span>
-            <span style="color: white;">以进行单个战备的随机</span>
+            <span style="color: white;">{{ t('app.clickToRandomize') }}</span>
           </div>
         </div>
       </div>

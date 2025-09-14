@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import Stratagem from './Stratagem.vue';
 import { attack, defense, support } from '../random-dict/stratagem-type';
 import { filename } from '../random-dict/filename';
@@ -10,13 +11,15 @@ import { type Option } from '../type';
 const bannedStratagems = defineModel<string[]>({ default: [] });
 const emit = defineEmits(["close"]);
 
+const { t } = useI18n();
+
 const toggleBan = (key: string) => {
   const idx = bannedStratagems.value.indexOf(key);
   if (
     idx === -1 &&
     attack.length + defense.length + support.length - bannedStratagems.value.length <= 4
   ) {
-    alert("可用战备过少！");
+    alert(t('stratagemSelector.tooFewStratagemAlert'));
     return;
   }
   if (idx !== -1) {
@@ -54,27 +57,27 @@ onMounted(() => {
 <template>
   <div class="banned-stratagem-selector" @click.right.prevent="emit('close')">
     <div class="title-container">
-      <span>战备选择菜单</span>
+      <span>{{ t('stratagemSelector.title') }}</span>
     </div>
 
     <div class="stratagem-lists">
       <div class="stratagem-lists-container" ref="stratagemListsContainer" @scroll="updateScrollbar">
         <div class="stratagem-list">
-          <span>进攻</span>
+          <span>{{ t('stratagemSelector.attack') }}</span>
           <div class="stratagem-container">
             <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
           </div>
         </div>
         <div class="stratagem-list">
-          <span>支援</span>
+          <span>{{ t('stratagemSelector.support') }}</span>
           <div class="stratagem-container">
             <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
           </div>
         </div>
         <div class="stratagem-list">
-          <span>防御</span>
+          <span>{{ t('stratagemSelector.defense') }}</span>
           <div class="stratagem-container">
             <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
@@ -100,13 +103,13 @@ onMounted(() => {
             <path
               d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14" />
           </svg>
-          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">重置</span>
+          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">{{ t('stratagemSelector.reset') }}</span>
         </div>
       </liber-button>
       <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="emit('close')">
         <div class="liber-button-inner">
           <span style="margin: 0 0 0 20px; color: #CBCBCE; font-weight: bold; font-size: 26px;">✓</span>
-          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">确认</span>
+          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">{{ t('stratagemSelector.confirm') }}</span>
         </div>
       </liber-button>
     </div>
