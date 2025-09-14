@@ -11,19 +11,18 @@ const en: MessageSchema = {
   settings: {
     title: 'Restrictions',
     singleBackpack: {
-      title: 'Allow only one backpack slot',
-      description: 'Including backpack stratagems and support weapons with ammo packs',
+      title: 'Allow only one backpack',
+      description: 'aaa',
     },
     singleSupportWeapon: {
-      title: 'Allow only one support weapon stratagem',
-      description: 'Also known as "slot 3"',
+      title: 'Allow only one support weapon',
+      description: 'aaa',
     },
     stratagemFilter: {
       title: 'Stratagem Filter Menu',
-      description: 'Currently excluded from random results:',
-      bannedCount: 'stratagems',
+      bannedCount: ' stratagems',
       openButton: 'Open',
-      currentlyBanned: 'Currently excluded from random results:',
+      currentlyBanned: 'Excluded count: ',
     },
   },
   stratagemSelector: {

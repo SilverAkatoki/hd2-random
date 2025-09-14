@@ -16,7 +16,8 @@ const hasEnabledBannedStratagem = ref(false);
 
 let bannedStratagems = ref<string[]>([]);
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const currLang = locale.value;
 
 const reRandomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
@@ -73,7 +74,7 @@ const preloadImages = () => {
         v-model="bannedStratagems" />
     </transition>
     <div class="top-bar"></div>
-    <div class="main-container" @click="closeStratagemSelector"
+    <div class="main-container" @click="closeStratagemSelector" :class="['main-container', currLang + '-style']"
       :style='{ "filter": (hasEnabledBannedStratagem ? "brightness(50%)" : "none") }'>
       <div class="sub-container">
         <div class="title-container">
@@ -92,7 +93,7 @@ const preloadImages = () => {
                 <span class="setting-description">{{ t('settings.singleBackpack.description') }}</span>
               </div>
               <div class="setting-button-container">
-                <toggle-button v-model:valueModel="allowSingleBackpack" />
+                <toggle-button v-model="allowSingleBackpack" />
               </div>
             </div>
             <div class="setting-container">
@@ -101,7 +102,7 @@ const preloadImages = () => {
                 <span class="setting-description">{{ t('settings.singleSupportWeapon.description') }}</span>
               </div>
               <div class="setting-button-container">
-                <toggle-button v-model:valueModel="allowSingleSupportWeapon" />
+                <toggle-button v-model="allowSingleSupportWeapon" />
               </div>
             </div>
             <div class="setting-container">
@@ -114,7 +115,8 @@ const preloadImages = () => {
                 </div>
               </div>
               <div class="setting-button-container">
-                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">{{ t('settings.stratagemFilter.openButton') }}</button>
+                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">{{
+                  t('settings.stratagemFilter.openButton') }}</button>
               </div>
             </div>
           </div>
@@ -129,7 +131,7 @@ const preloadImages = () => {
           <div>
             <liber-button colorA="#A1920B" colorB="#FEE70F" @click="reRandomizeStratagems">
               <div class="random-button-inner">
-                <span style="color: #FEE70F; font-size: 20px; font-weight: 500;">{{ t('app.randomizeAll') }}</span>
+                <span>{{ t('app.randomizeAll') }}</span>
                 <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
               </div>
             </liber-button>
@@ -145,6 +147,20 @@ const preloadImages = () => {
 </template>
 
 <style scoped lang="css">
+div.main-container.en-style {
+  div.title-container {
+    >span {
+      font-size: 26px;
+    }
+  }
+
+  div.random-button-inner {
+    >span {
+      font-size: 16px;
+    }
+  }
+}
+
 main {
   display: flex;
   flex-direction: column;

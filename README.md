@@ -1,5 +1,18 @@
-# Vue 3 + TypeScript + Vite
+# HD2-Random
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+无聊时可以用此为银河系解放战争添加一些**小小的**挑战
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+**Tip**: 本仓库不为任何因使用随机战备任务失败而被真理部枪决的潜兵负责
+
+## 更新记录
+
+截至 2025-09-02「正义未至之境」版本更新前 *其实还没有更新*
+
+## 资源素材来历
+
+战备的 svg 图形来自 [Helldivers Wiki](https://helldivers.wiki.gg/)
+名称取自游戏内文本，部分经由本人润色与删改
+
+## 鸣谢
+
+- 本征老师[@Eigeen](https://github.com/eigeen)帮助了完成 **i18n 部分**，同时指导了我很多

@@ -11,7 +11,8 @@ import { type Option } from '../type';
 const bannedStratagems = defineModel<string[]>({ default: [] });
 const emit = defineEmits(["close"]);
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const currLang = locale.value;
 
 const toggleBan = (key: string) => {
   const idx = bannedStratagems.value.indexOf(key);
@@ -55,7 +56,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="banned-stratagem-selector" @click.right.prevent="emit('close')">
+  <div class="banned-stratagem-selector" @click.right.prevent="emit('close')"
+    :class="['banned-stratagem-selector', currLang + '-style']">
     <div class="title-container">
       <span>{{ t('stratagemSelector.title') }}</span>
     </div>
@@ -103,13 +105,14 @@ onMounted(() => {
             <path
               d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14" />
           </svg>
-          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">{{ t('stratagemSelector.reset') }}</span>
+          <span class="right">{{
+            t('stratagemSelector.reset') }}</span>
         </div>
       </liber-button>
       <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="emit('close')">
         <div class="liber-button-inner">
-          <span style="margin: 0 0 0 20px; color: #CBCBCE; font-weight: bold; font-size: 26px;">✓</span>
-          <span style="margin: 0 20px 0 0; color: #CBCBCE; font-size: 20px; font-weight: 500;">{{ t('stratagemSelector.confirm') }}</span>
+          <span class="left">✓</span>
+          <span class="right">{{ t('stratagemSelector.confirm') }}</span>
         </div>
       </liber-button>
     </div>
@@ -135,6 +138,25 @@ div.banned-stratagem-selector {
 
   display: flex;
   flex-direction: column;
+}
+
+div.banned-stratagem-selector.en-style {
+  div.title-container {
+    >span {
+      letter-spacing: 0px;
+    }
+  }
+
+  div.liber-button-inner {
+    >span.left {
+      margin-left: 15px;
+    }
+
+    >span.right {
+      margin-left: 5px;
+      font-size: 18px;
+    }
+  }
 }
 
 div.title-container {
@@ -238,6 +260,20 @@ div.liber-button-inner {
 
   position: relative;
   border-style: none;
+
+  >span.left {
+    margin: 0 0 0 20px;
+    color: #CBCBCE;
+    font-weight: bold;
+    font-size: 26px;
+  }
+
+  >span.right {
+    margin: 0 20px 0 0;
+    color: #CBCBCE;
+    font-size: 20px;
+    font-weight: 500;
+  }
 }
 
 div.scrollbar-outer {

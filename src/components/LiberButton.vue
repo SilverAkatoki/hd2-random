@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
-  colorA?: string,
-  colorB?: string,
+  colorA: string,
+  colorB: string,
   disabled?: boolean
 }>();
 

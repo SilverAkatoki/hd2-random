@@ -18,7 +18,6 @@ const zh = {
     },
     stratagemFilter: {
       title: '战备过滤菜单',
-      description: '当前已在随机结果中排除',
       bannedCount: '个战备',
       openButton: '打开',
       currentlyBanned: '当前已在随机结果中排除',
