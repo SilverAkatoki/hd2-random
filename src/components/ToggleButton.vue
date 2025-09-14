@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, type ModelRef } from 'vue'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const model: ModelRef<boolean> = defineModel("valueModel", { type: Boolean, required: true });
+const { t } = useI18n();
+
+const model = defineModel<boolean>({ required: true });
 
 function toggle(val: boolean): void {
   model.value = val;
@@ -27,7 +30,7 @@ const hoverRight = ref(false);
         </svg>
       </button>
       <div class="description">
-        <span class="value">{{ model ? '是' : '否' }}</span>
+        <span class="value">{{ model ? t('app.yes') : t('app.no') }}</span>
         <div class="options">
           <div :class="['option', model ? 'active' : '']" />
           <div :class="['option', !model ? 'active' : '']" />

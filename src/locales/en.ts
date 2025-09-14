@@ -1,10 +1,12 @@
-import type { MessageSchema } from './index';
+import type { MessageSchema } from ".";
 
 const en: MessageSchema = {
   app: {
     title: 'Helldivers 2 Random Stratagems',
     randomizeAll: 'Randomize All',
     clickToRandomize: 'Click stratagem icons to randomize individual stratagems',
+    yes: 'Yes',
+    no: 'No',
   },
   settings: {
     title: 'Restrictions',

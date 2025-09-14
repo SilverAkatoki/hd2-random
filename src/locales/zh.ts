@@ -1,10 +1,10 @@
-import type { MessageSchema } from './index';
-
-const zh: MessageSchema = {
+const zh = {
   app: {
     title: 'Helldivers 2 全随机战备',
     randomizeAll: '全部随机',
     clickToRandomize: '点击战备图标以进行单个战备的随机',
+    yes: '是',
+    no: '否',
   },
   settings: {
     title: '限制条件',
