@@ -7,7 +7,7 @@ import LiberButton from './LiberButton.vue';
 import { ref, onMounted } from 'vue';
 import { type Option } from '../type';
 
-const bannedStratagems = ref<string[]>([]);
+const bannedStratagems = defineModel<string[]>({ default: [] });
 const emit = defineEmits(["close"]);
 
 const toggleBan = (key: string) => {
@@ -91,7 +91,7 @@ onMounted(() => {
 
     <div class="bottom-container">
       <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="bannedStratagems = []"
-        :disabled="bannedStratagems.length == 0">
+        :disabled="bannedStratagems.length === 0">
         <div class="liber-button-inner">
           <svg xmlns="http://www.w3.org/2000/svg" role="img" width="30px" height="30px" viewBox="0 0 24 24"
             aria-labelledby="refreshIconTitle" stroke="#CBCBCE" stroke-width="2" stroke-linecap="square"
@@ -274,5 +274,4 @@ div.scrollbar-inner-top {
 div.scrollbar-inner-bottom {
   bottom: 0;
 }
-
 </style>
