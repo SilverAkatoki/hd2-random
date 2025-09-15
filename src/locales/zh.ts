@@ -21,6 +21,7 @@ const zh = {
       bannedCount: '个战备',
       openButton: '打开',
       currentlyBanned: '当前已在随机结果中排除',
+      lackingStratagemErrorInfo: "无法生成足够的战备组合，请修改筛选器设置"
     },
   },
   stratagemSelector: {

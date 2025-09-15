@@ -13,6 +13,7 @@ const stratagems = ref(getRandomCombinations());
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
 const hasEnabledBannedStratagem = ref(false);
+const hasStratagemsError = ref(false);
 
 let bannedStratagems = ref<string[]>([]);
 
@@ -21,6 +22,7 @@ const currLang = locale.value;
 
 const reRandomizeStratagems = () => {
   stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
+  hasStratagemsError.value = stratagems.value.length < 4;
 };
 
 const reRandomizeSingleStratagem = (index: number) => {
@@ -34,6 +36,7 @@ const closeStratagemSelector = () => {
 };
 
 onMounted(() => {
+  hasStratagemsError.value = stratagems.value.length < 4;
   preloadImages();
 });
 
@@ -122,21 +125,24 @@ const preloadImages = () => {
           </div>
         </div>
         <div class="stratagems-outer-container">
-          <div class="stratagems-inner-container">
+          <div v-if="hasStratagemsError" class="error-message-container">
+            <div class="error-text">{{ t('settings.stratagemFilter.lackingStratagemErrorInfo') }}</div>
+          </div>
+          <div v-else class="stratagems-inner-container">
             <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
               :index="index" @click="reRandomizeSingleStratagem" />
           </div>
         </div>
         <div class="random-button-container">
           <div>
-            <liber-button colorA="#A1920B" colorB="#FEE70F" @click="reRandomizeStratagems">
+            <liber-button colorA="#A1920B" colorB="#FEE70F" :disabled="hasStratagemsError" @click="reRandomizeStratagems">
               <div class="random-button-inner">
                 <span>{{ t('app.randomizeAll') }}</span>
                 <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
               </div>
             </liber-button>
           </div>
-          <div style="user-select: none;">
+          <div v-if="!hasStratagemsError" style="user-select: none;">
             <span style="color: white;">{{ t('app.clickToRandomize') }}</span>
           </div>
         </div>
@@ -157,6 +163,11 @@ div.main-container.en-style {
   div.random-button-inner {
     >span {
       font-size: 16px;
+    }
+  }
+  div.error-message-container {
+    div.error-text {
+      font-size: 18px;
     }
   }
 }
@@ -339,6 +350,29 @@ div.stratagems-outer-container {
     flex-direction: row;
     justify-content: space-around;
     gap: 20px;
+  }
+}
+
+div.error-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70%;
+  height: auto;
+  background-color: #301011;
+  border: 2px solid rgb(140, 12, 16);
+
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  div.error-text {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
   }
 }
 

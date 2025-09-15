@@ -23,6 +23,7 @@ const en: MessageSchema = {
       bannedCount: ' stratagems',
       openButton: 'Open',
       currentlyBanned: 'Excluded count: ',
+      lackingStratagemErrorInfo: "Unable to generate enough stratagem combinations, please modify filter's setting"
     },
   },
   stratagemSelector: {

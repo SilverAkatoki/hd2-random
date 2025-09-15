@@ -16,13 +16,6 @@ const currLang = locale.value;
 
 const toggleBan = (key: string) => {
   const idx = bannedStratagems.value.indexOf(key);
-  if (
-    idx === -1 &&
-    attack.length + defense.length + support.length - bannedStratagems.value.length <= 4
-  ) {
-    alert(t('stratagemSelector.tooFewStratagemAlert'));
-    return;
-  }
   if (idx !== -1) {
     bannedStratagems.value.splice(idx, 1);
   } else {

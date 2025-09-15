@@ -97,6 +97,8 @@ export const support: readonly string[] = [
   "apw1antimaterielrifle",
   "arc3arcthrower",
   "eat17expendableantitank",
+  "eat700expendablenapalm",
+  "speargun",
   "epoch",
   "faf14spear",
   "flam40flamethrower",
@@ -137,4 +139,5 @@ export const defense: readonly string[] = [
   "rocketsentry",
   "shieldgeneratorrelay",
   "teslatower",
+  "solosilo",
 ];

@@ -73,4 +73,7 @@ export const filename: { readonly [key: string]: string } = {
   orbitalrailcannonstrike: "red/orbital/orbitalrailcannonstrike.svg",
   orbitalsmokestrike: "red/orbital/orbitalsmokestrike.svg",
   orbitalwalkingbarrage: "red/orbital/orbitalwalkingbarrage.svg",
+  speargun: "blue/support-weapon/speargun.svg",
+  solosilo: "green/sentry/solosilo.svg",
+  eat700expendablenapalm: "blue/support-weapon/eat700expendablenapalm.svg",
 };

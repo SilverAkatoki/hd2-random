@@ -35,7 +35,7 @@ const onClick = () => {
 div.liber-button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  filter: grayscale(0.7) brightness(0.7);
+  filter: grayscale(1) brightness(0.7);
   pointer-events: none;
   box-shadow: none;
 }

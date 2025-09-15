@@ -71,4 +71,7 @@ export const stratagemName: { readonly [key: string]: string } = {
   orbitalrailcannonstrike: "轨道磁轨炮攻击",
   orbitalsmokestrike: "轨道烟雾攻击",
   orbitalwalkingbarrage: "轨道游走火力网",
+  speargun: "矛枪",
+  solosilo: "单兵导弹发射井",
+  eat700expendablenapalm: "消耗性凝固汽油弹",
 };
