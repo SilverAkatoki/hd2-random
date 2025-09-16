@@ -129,7 +129,7 @@ const preloadImages = () => {
             <div class="error-text">{{ t('settings.stratagemFilter.lackingStratagemErrorInfo') }}</div>
           </div>
           <div v-else class="stratagems-inner-container">
-            <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="item.text"
+            <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="t(`stratagems.${item.ID}`)"
               :index="index" @click="reRandomizeSingleStratagem" />
           </div>
         </div>

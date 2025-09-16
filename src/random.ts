@@ -1,5 +1,4 @@
 import { filename } from "./random-dict/filename";
-import { stratagemName } from "./random-dict/stratagem-name";
 import {
   backpack,
   supportWeapon,
@@ -20,9 +19,9 @@ export const getRandomCombinations = (
   allowSingleBackpack: boolean = false,
   allowSingleSupportWeapon: boolean = false,
   bannedStratagems: string[] = []
-): { ID: string; imgSrc: string; text: string }[] => {
-  const keys = Object.keys(filename).filter((key) => key in stratagemName);
-  const combinations: { ID: string; imgSrc: string; text: string }[] = [];
+): { ID: string; imgSrc: string }[] => {
+  const keys = Object.keys(filename);
+  const combinations: { ID: string; imgSrc: string }[] = [];
 
   const shuffledKeys = shuffle(keys);
 
@@ -55,7 +54,6 @@ export const getRandomCombinations = (
     combinations.push({
       ID: key,
       imgSrc: filename[key],
-      text: stratagemName[key],
     });
   }
 
@@ -64,11 +62,11 @@ export const getRandomCombinations = (
 
 export const randomizeSingleStratagem = (
   index: number,
-  stratagems: { ID: string; imgSrc: string; text: string }[],
+  stratagems: { ID: string; imgSrc: string }[],
   allowSingleBackpack: boolean,
   allowSingleSupportWeapon: boolean,
   bannedStratagems: string[]
-): { ID: string; imgSrc: string; text: string } => {
+): { ID: string; imgSrc: string } => {
   let newStratagem;
   let attempts = 0;
 
