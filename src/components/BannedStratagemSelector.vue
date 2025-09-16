@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import Stratagem from './Stratagem.vue';
 import { attack, defense, support } from '../random-dict/stratagem-type';
 import { filename } from '../random-dict/filename';
+import { useImageCache } from '../composables/useImageCache';
 
 import LiberButton from './LiberButton.vue';
 import { ref, onMounted } from 'vue';
@@ -12,6 +13,7 @@ const bannedStratagems = defineModel<string[]>({ default: [] });
 const emit = defineEmits(["close"]);
 
 const { t, locale } = useI18n();
+const { getCachedImageUrl } = useImageCache();
 const currLang = locale.value;
 
 const toggleBan = (key: string) => {
@@ -60,21 +62,21 @@ onMounted(() => {
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.attack') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+            <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
           </div>
         </div>
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.support') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+            <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
           </div>
         </div>
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.defense') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="'/stratagems/' + filename[key]" :index="idx"
+            <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
           </div>
         </div>

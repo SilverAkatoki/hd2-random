@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getRandomCombinations, randomizeSingleStratagem } from './random';
-import { filename } from './random-dict/filename';
+import { getRandomCombinations, randomizeSingleStratagem } from './composables/random';
+import { useImageCache } from './composables/useImageCache';
 
 import ToggleButton from './components/ToggleButton.vue';
 import Stratagem from './components/Stratagem.vue';
@@ -18,6 +18,7 @@ const hasStratagemsError = ref(false);
 let bannedStratagems = ref<string[]>([]);
 
 const { t, locale } = useI18n();
+const { preloadImages, getCachedImageUrl } = useImageCache();
 const currLang = locale.value;
 
 const reRandomizeStratagems = () => {
@@ -59,15 +60,6 @@ watch(hasEnabledBannedStratagem, (x: Boolean) => {
   }
 });
 
-
-// 不缓存图片卡飞了
-const preloadImages = () => {
-  const images = Object.entries(filename).map(([_, value]) => `stratagems/${value}`);
-  images.forEach(src => {
-    const img = new Image();
-    img.src = import.meta.env.BASE_URL + src;
-  });
-};
 </script>
 
 <template>
@@ -129,13 +121,14 @@ const preloadImages = () => {
             <div class="error-text">{{ t('settings.stratagemFilter.lackingStratagemErrorInfo') }}</div>
           </div>
           <div v-else class="stratagems-inner-container">
-            <stratagem v-for="(item, index) in stratagems" :imageSrc="'/stratagems/' + item.imgSrc" :text="t(`stratagems.${item.ID}`)"
-              :index="index" @click="reRandomizeSingleStratagem" />
+            <stratagem v-for="(item, index) in stratagems" :imageSrc="getCachedImageUrl('stratagems/' + item.imgSrc)"
+              :text="t(`stratagems.${item.ID}`)" :index="index" @click="reRandomizeSingleStratagem" />
           </div>
         </div>
         <div class="random-button-container">
           <div>
-            <liber-button colorA="#A1920B" colorB="#FEE70F" :disabled="hasStratagemsError" @click="reRandomizeStratagems">
+            <liber-button colorA="#A1920B" colorB="#FEE70F" :disabled="hasStratagemsError"
+              @click="reRandomizeStratagems">
               <div class="random-button-inner">
                 <span>{{ t('app.randomizeAll') }}</span>
                 <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
@@ -165,6 +158,7 @@ div.main-container.en-style {
       font-size: 16px;
     }
   }
+
   div.error-message-container {
     div.error-text {
       font-size: 18px;

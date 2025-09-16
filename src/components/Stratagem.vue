@@ -6,15 +6,13 @@ defineProps<{
 }>();
 
 const emit = defineEmits(["click"]);
-
-const base = import.meta.env.BASE_URL;
 </script>
 
 <template>
   <div class="stratagem" @click="emit('click', index)">
     <div class="img-container">
       <div class="top" />
-      <img :src="base + imageSrc" alt="stratagem image" draggable="false" />
+      <img :src="imageSrc" alt="stratagem image" draggable="false" />
       <div class="bottom" />
     </div>
 

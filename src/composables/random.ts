@@ -1,9 +1,9 @@
-import { filename } from "./random-dict/filename";
+import { filename } from "../random-dict/filename";
 import {
   backpack,
   supportWeapon,
   supportWeaponWithBackpack,
-} from "./random-dict/stratagem-type";
+} from "../random-dict/stratagem-type";
 
 // Fisher-Yates
 const shuffle = <T>(array: T[]): T[] => {

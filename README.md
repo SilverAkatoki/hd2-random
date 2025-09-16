@@ -16,3 +16,4 @@
 ## 鸣谢
 
 - 本征老师[@Eigeen](https://github.com/eigeen)帮助了完成 **i18n 部分**，同时指导了我很多在开发上的知识
+- [@Darksky](https://github.com/DarkskyX15)提供了 **图片缓存部分** 的实现思路
