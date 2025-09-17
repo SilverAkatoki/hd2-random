@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getRandomCombinations, randomizeSingleStratagem } from './composables/random';
+import { getRandomCombinations, randomizeSingleStratagem } from './utils/liberRandom';
 import { useImageCache } from './composables/useImageCache';
 
 import ToggleButton from './components/ToggleButton.vue';
@@ -18,16 +18,17 @@ const hasStratagemsError = ref(false);
 let bannedStratagems = ref<string[]>([]);
 
 const { t, locale } = useI18n();
-const { preloadImages, getCachedImageUrl } = useImageCache();
 const currLang = locale.value;
 
+const { preloadImages, getCachedImageUrl } = useImageCache();
+
 const reRandomizeStratagems = () => {
-  stratagems.value = getRandomCombinations(allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
+  stratagems.value = getRandomCombinations(bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
   hasStratagemsError.value = stratagems.value.length < 4;
 };
 
 const reRandomizeSingleStratagem = (index: number) => {
-  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value, bannedStratagems.value);
+  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value,bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
 };
 
 const closeStratagemSelector = () => {

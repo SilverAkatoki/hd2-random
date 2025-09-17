@@ -4,6 +4,7 @@ import {
   supportWeapon,
   supportWeaponWithBackpack,
 } from "../random-dict/stratagem-type";
+import type { Stratagem } from "../type";
 
 // Fisher-Yates
 const shuffle = <T>(array: T[]): T[] => {
@@ -16,12 +17,12 @@ const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const getRandomCombinations = (
+  bannedStratagems: string[] = [],
   allowSingleBackpack: boolean = false,
   allowSingleSupportWeapon: boolean = false,
-  bannedStratagems: string[] = []
-): { ID: string; imgSrc: string }[] => {
+): Stratagem[] => {
   const keys = Object.keys(filename);
-  const combinations: { ID: string; imgSrc: string }[] = [];
+  const combinations: Stratagem[] = [];
 
   const shuffledKeys = shuffle(keys);
 
@@ -62,16 +63,16 @@ export const getRandomCombinations = (
 
 export const randomizeSingleStratagem = (
   index: number,
-  stratagems: { ID: string; imgSrc: string }[],
+  stratagems: Stratagem[],
+  bannedStratagems: string[],
   allowSingleBackpack: boolean,
   allowSingleSupportWeapon: boolean,
-  bannedStratagems: string[]
-): { ID: string; imgSrc: string } => {
+): Stratagem => {
   let newStratagem;
   let attempts = 0;
 
   do {
-    const allCombinations = getRandomCombinations(false, false, bannedStratagems);
+    const allCombinations = getRandomCombinations(bannedStratagems, false, false);
     newStratagem = allCombinations[Math.floor(Math.random() * allCombinations.length)];
 
     const otherKeys = stratagems
