@@ -27,10 +27,10 @@ const onClick = () => {
     <div class="slot-content">
       <slot />
     </div>
-    <div class="corner top-left"></div>
-    <div class="corner top-right"></div>
-    <div class="corner bottom-left"></div>
-    <div class="corner bottom-right"></div>
+    <div class="corner top-left" />
+    <div class="corner top-right" />
+    <div class="corner bottom-left" />
+    <div class="corner bottom-right" />
   </div>
 </template>
 

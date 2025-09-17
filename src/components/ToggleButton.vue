@@ -15,7 +15,7 @@ const hoverRight = ref(false);
 </script>
 
 <template>
-  <div class="toggle-btn">
+  <div class="toggle-button">
     <div class="click-overlay">
       <div
         class="click-area left"
@@ -31,7 +31,7 @@ const hoverRight = ref(false);
       ></div>
     </div>
     <div class="toggle-controls">
-      <button class="arrow-btn arrow-left" :class="{ hovered: hoverLeft }">
+      <button class="arrow-button arrow-left" :class="{ hovered: hoverLeft }">
         <svg width="40" height="40" viewBox="0 0 40 40">
           <polygon points="33,10 15,20 33,30" fill="currentColor" />
         </svg>
@@ -43,7 +43,7 @@ const hoverRight = ref(false);
           <div :class="['option', !model ? 'active' : '']" />
         </div>
       </div>
-      <button class="arrow-btn arrow-right" :class="{ hovered: hoverRight }">
+      <button class="arrow-button arrow-right" :class="{ hovered: hoverRight }">
         <svg width="40" height="40" viewBox="0 0 40 40">
           <polygon points="7,30 25,20 7,10" fill="currentColor" />
         </svg>
@@ -52,8 +52,8 @@ const hoverRight = ref(false);
   </div>
 </template>
 
-<style scoped>
-.toggle-btn {
+<style scoped lang="css">
+div.toggle-button {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,18 +61,13 @@ const hoverRight = ref(false);
   position: relative;
 }
 
-.label {
-  margin-bottom: 8px;
-  font-size: 16px;
-}
-
-.toggle-controls {
+div.toggle-controls {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.arrow-btn {
+button.arrow-button {
   background: none;
   border: none;
   font-size: 20px;
@@ -82,35 +77,35 @@ const hoverRight = ref(false);
   transition: color 0.2s;
 }
 
-.arrow-btn.hovered {
+button.arrow-button.hovered {
   color: #fee70f;
 }
 
-.arrow-btn:disabled {
+button.arrow-button:disabled {
   color: #ccc;
 }
 
-.arrow-left {
+button.arrow-left {
   padding-right: 20px;
 }
 
-.arrow-right {
+button.arrow-right {
   padding-left: 20px;
 }
 
-.value {
+span.value {
   margin: 0 16px;
   font-size: 18px;
   color: #b9b9b9;
   font-weight: medium;
 }
 
-.options {
+div.options {
   display: flex;
   gap: 12px;
 }
 
-.option {
+div.option {
   width: 48px;
   height: 5px;
   background: #555;
@@ -124,20 +119,20 @@ const hoverRight = ref(false);
     color 0.2s;
 }
 
-.option.active {
+div.option.active {
   background: #ddd;
   color: #fff;
   box-shadow: 0 2px 8px rgba(64, 158, 255, 0.15);
 }
 
-.description {
+div.description {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.click-overlay {
+div.click-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -150,7 +145,7 @@ const hoverRight = ref(false);
   height: 100%;
 }
 
-.click-area {
+div.click-area {
   width: 50%;
   height: 100%;
   display: flex;
@@ -159,11 +154,11 @@ const hoverRight = ref(false);
   cursor: pointer;
 }
 
-.click-area.left {
+div.click-area.left {
   padding-right: 20px;
 }
 
-.click-area.right {
+div.click-area.right {
   padding-left: 20px;
 }
 </style>

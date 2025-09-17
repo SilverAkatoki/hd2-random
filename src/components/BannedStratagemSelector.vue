@@ -17,20 +17,18 @@ const { getCachedImageUrl } = useImageCache();
 const currLang = locale.value;
 
 const toggleBan = (key: string) => {
-  const idx = bannedStratagems.value.indexOf(key);
-  if (idx !== -1) {
-    bannedStratagems.value.splice(idx, 1);
-  } else {
-    bannedStratagems.value.push(key);
-  }
+  const banned = bannedStratagems.value;
+  bannedStratagems.value = banned.includes(key)
+    ? banned.filter(item => item !== key)
+    : [...banned, key];
 };
 
 const stratagemListsContainer = ref<Option<HTMLElement>>(null);
 const scrollbarInner = ref<Option<HTMLElement>>(null);
 
 const updateScrollbar = () => {
-  const container = stratagemListsContainer.value!;
-  const inner = scrollbarInner.value!;
+  const container: HTMLElement = stratagemListsContainer.value!;
+  const inner: HTMLElement = scrollbarInner.value!;
 
   const scrollTop = container.scrollTop;
   const scrollHeight = container.scrollHeight;
@@ -124,26 +122,7 @@ onMounted(() => {
         :disabled="bannedStratagems.length === 0"
       >
         <div class="liber-button-inner">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            width="30px"
-            height="30px"
-            viewBox="0 0 24 24"
-            aria-labelledby="refreshIconTitle"
-            stroke="#CBCBCE"
-            stroke-width="2"
-            stroke-linecap="square"
-            stroke-linejoin="miter"
-            fill="none"
-            color="#CBCBCE"
-            style="margin: 0 0 0 20px"
-          >
-            <polyline points="22 12 19 15 16 12" />
-            <path
-              d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14"
-            />
-          </svg>
+          <img src="/reset.svg" style="margin: 0 0 0 20px" />
           <span class="right">{{ t('stratagemSelector.reset') }}</span>
         </div>
       </liber-button>

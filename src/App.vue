@@ -89,7 +89,7 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
         v-model="bannedStratagems"
       />
     </transition>
-    <div class="top-bar"></div>
+    <div class="top-bar" />
     <div
       class="main-container"
       @click="closeStratagemSelector"
@@ -165,8 +165,8 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
                     {{ bannedStratagems.length }}
                   </span>
                   <span class="setting-description">
-                    {{ t('settings.stratagemFilter.bannedCount') }}</span
-                  >
+                    {{ t('settings.stratagemFilter.bannedCount') }}
+                  </span>
                 </div>
               </div>
               <div class="setting-button-container">
@@ -216,7 +216,7 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
         </div>
       </div>
     </div>
-    <div class="bottom-bar"></div>
+    <div class="bottom-bar" />
   </main>
 </template>
 
