@@ -7,6 +7,7 @@ const en: MessageSchema = {
     clickToRandomize: 'Click stratagem icons to randomize individual stratagems',
     yes: 'Yes',
     no: 'No',
+    updateDateTip: 'Last update at',
   },
   settings: {
     title: 'Restrictions',

@@ -15,6 +15,8 @@ const allowSingleSupportWeapon = ref(false);
 const hasEnabledBannedStratagem = ref(false);
 const hasStratagemsError = ref(false);
 
+const lastUpdateDate = ref<string>("2025-09-12");
+
 let bannedStratagems = ref<string[]>([]);
 
 const { t, locale } = useI18n();
@@ -28,7 +30,7 @@ const reRandomizeStratagems = () => {
 };
 
 const reRandomizeSingleStratagem = (index: number) => {
-  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value,bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
+  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
 };
 
 const closeStratagemSelector = () => {
@@ -48,7 +50,7 @@ watch([allowSingleBackpack, allowSingleSupportWeapon], reRandomizeStratagems);
 
 // 更改筛选后重新随机
 let previousBannedStratagems: string[] = [];
-watch(hasEnabledBannedStratagem, (x: Boolean) => {
+watch(hasEnabledBannedStratagem, (x: boolean) => {
   if (x) {
     previousBannedStratagems = [...bannedStratagems.value];
   } else {
@@ -74,10 +76,17 @@ watch(hasEnabledBannedStratagem, (x: Boolean) => {
       :style='{ "filter": (hasEnabledBannedStratagem ? "brightness(50%)" : "none") }'>
       <div class="sub-container">
         <div class="title-container">
-          <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" draggable="false" />
-          <span>{{ t('app.title') }}</span>
-          <img src="/title.svg" style="height: 32px; margin-left: 10px;" draggable="false" />
+          <div class="title">
+            <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" draggable="false" />
+            <span>{{ t('app.title') }}</span>
+            <img src="/title.svg" style="height: 32px; margin-left: 10px;" draggable="false" />
+          </div>
+          <div class="latest-date-container">
+            <span style="color: #aaa; margin-right: 10px;">{{ t('app.updateDateTip') }}</span>
+            <span style="color: white;">{{ lastUpdateDate }}</span>
+          </div>
         </div>
+
         <div class="rules-setting">
           <div class="rules-title-container">
             <span class="rules-title">{{ t('settings.title') }}</span>
@@ -149,8 +158,10 @@ watch(hasEnabledBannedStratagem, (x: Boolean) => {
 <style scoped lang="css">
 div.main-container.en-style {
   div.title-container {
-    >span {
-      font-size: 26px;
+    >div.title {
+      >span {
+        font-size: 26px;
+      }
     }
   }
 
@@ -206,7 +217,7 @@ div.main-container::before {
 
 div.sub-container {
   width: 40%;
-  height: 85%;
+  height: 90%;
   background-color: rgba(0, 0, 0, 0.6);
   border: 2px solid #333;
   display: flex;
@@ -244,14 +255,16 @@ div.title-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 20px;
 
-  >span {
-    font-size: 32px;
-    font-weight: bold;
-    color: #FEE70F;
-    user-select: none;
+  >div.title {
+    >span {
+      font-size: 32px;
+      font-weight: bold;
+      color: #FEE70F;
+      user-select: none;
+    }
   }
 }
 

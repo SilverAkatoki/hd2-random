@@ -5,6 +5,7 @@ const zh = {
     clickToRandomize: '点击战备图标以进行单个战备的随机',
     yes: '是',
     no: '否',
+    updateDateTip: '上一次更新日期',
   },
   settings: {
     title: '限制条件',
