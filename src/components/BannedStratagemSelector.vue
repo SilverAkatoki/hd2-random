@@ -10,7 +10,7 @@ import { ref, onMounted } from 'vue';
 import { type Option } from '../type';
 
 const bannedStratagems = defineModel<string[]>({ default: [] });
-const emit = defineEmits(["close"]);
+const emit = defineEmits(['close']);
 
 const { t, locale } = useI18n();
 const { getCachedImageUrl } = useImageCache();
@@ -37,7 +37,9 @@ const updateScrollbar = () => {
   const clientHeight = container.clientHeight;
 
   const scrollbarHeight = (clientHeight / scrollHeight) * clientHeight;
-  const scrollOffset = (scrollTop / (scrollHeight - clientHeight)) * (clientHeight - scrollbarHeight);
+  const scrollOffset =
+    (scrollTop / (scrollHeight - clientHeight)) *
+    (clientHeight - scrollbarHeight);
 
   inner.style.height = `${scrollbarHeight}px`;
   inner.style.transform = `translateY(${scrollOffset}px)`;
@@ -51,33 +53,58 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="banned-stratagem-selector" @click.right.prevent="emit('close')"
-    :class="['banned-stratagem-selector', currLang + '-style']">
+  <div
+    class="banned-stratagem-selector"
+    @click.right.prevent="emit('close')"
+    :class="['banned-stratagem-selector', currLang + '-style']"
+  >
     <div class="title-container">
       <span>{{ t('stratagemSelector.title') }}</span>
     </div>
 
     <div class="stratagem-lists">
-      <div class="stratagem-lists-container" ref="stratagemListsContainer" @scroll="updateScrollbar">
+      <div
+        class="stratagem-lists-container"
+        ref="stratagemListsContainer"
+        @scroll="updateScrollbar"
+      >
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.attack') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in attack" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
-              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+            <Stratagem
+              v-for="(key, idx) in attack"
+              :key="key"
+              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }"
+              @click="toggleBan(key)"
+            />
           </div>
         </div>
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.support') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in support" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
-              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+            <Stratagem
+              v-for="(key, idx) in support"
+              :key="key"
+              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }"
+              @click="toggleBan(key)"
+            />
           </div>
         </div>
         <div class="stratagem-list">
           <span>{{ t('stratagemSelector.defense') }}</span>
           <div class="stratagem-container">
-            <Stratagem v-for="(key, idx) in defense" :key="key" :imageSrc="getCachedImageUrl('stratagems/' + filename[key])" :index="idx"
-              :class="{ banned: bannedStratagems.includes(key) }" @click="toggleBan(key)" />
+            <Stratagem
+              v-for="(key, idx) in defense"
+              :key="key"
+              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :index="idx"
+              :class="{ banned: bannedStratagems.includes(key) }"
+              @click="toggleBan(key)"
+            />
           </div>
         </div>
       </div>
@@ -90,18 +117,34 @@ onMounted(() => {
     </div>
 
     <div class="bottom-container">
-      <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="bannedStratagems = []"
-        :disabled="bannedStratagems.length === 0">
+      <liber-button
+        colorA="#D5D5D5"
+        colorB="#CBCBCE"
+        @click="bannedStratagems = []"
+        :disabled="bannedStratagems.length === 0"
+      >
         <div class="liber-button-inner">
-          <svg xmlns="http://www.w3.org/2000/svg" role="img" width="30px" height="30px" viewBox="0 0 24 24"
-            aria-labelledby="refreshIconTitle" stroke="#CBCBCE" stroke-width="2" stroke-linecap="square"
-            stroke-linejoin="miter" fill="none" color="#CBCBCE" style="margin: 0 0 0 20px;">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            width="30px"
+            height="30px"
+            viewBox="0 0 24 24"
+            aria-labelledby="refreshIconTitle"
+            stroke="#CBCBCE"
+            stroke-width="2"
+            stroke-linecap="square"
+            stroke-linejoin="miter"
+            fill="none"
+            color="#CBCBCE"
+            style="margin: 0 0 0 20px"
+          >
             <polyline points="22 12 19 15 16 12" />
             <path
-              d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14" />
+              d="M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14"
+            />
           </svg>
-          <span class="right">{{
-            t('stratagemSelector.reset') }}</span>
+          <span class="right">{{ t('stratagemSelector.reset') }}</span>
         </div>
       </liber-button>
       <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="emit('close')">
@@ -137,17 +180,17 @@ div.banned-stratagem-selector {
 
 div.banned-stratagem-selector.en-style {
   div.title-container {
-    >span {
+    > span {
       letter-spacing: 0px;
     }
   }
 
   div.liber-button-inner {
-    >span.left {
+    > span.left {
       margin-left: 15px;
     }
 
-    >span.right {
+    > span.right {
       margin-left: 5px;
       font-size: 18px;
     }
@@ -163,9 +206,9 @@ div.title-container {
   align-items: center;
   justify-content: space-between;
 
-  >span {
+  > span {
     margin: 0 10px 0 20px;
-    color: #FEE70F;
+    color: #fee70f;
     font-size: 24px;
     letter-spacing: 2px;
     user-select: none;
@@ -179,7 +222,7 @@ div.title-container::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(/stripes_gray.svg);
+  background-image: url(/stripes_background.svg);
   background-size: 250%;
   z-index: -1;
 }
@@ -204,23 +247,23 @@ div.stratagem-lists {
   div.stratagem-list {
     gap: 10px;
 
-    >span {
+    > span {
       display: block;
-      color: #DDD;
+      color: #ddd;
       font-size: 20px;
       letter-spacing: 2px;
       margin-bottom: 10px;
       user-select: none;
     }
 
-    >div.stratagem-container {
+    > div.stratagem-container {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 10px;
 
-      >* {
+      > * {
         width: 7%;
       }
     }
@@ -256,16 +299,16 @@ div.liber-button-inner {
   position: relative;
   border-style: none;
 
-  >span.left {
+  > span.left {
     margin: 0 0 0 20px;
-    color: #CBCBCE;
+    color: #cbcbce;
     font-weight: bold;
     font-size: 26px;
   }
 
-  >span.right {
+  > span.right {
     margin: 0 20px 0 0;
-    color: #CBCBCE;
+    color: #cbcbce;
     font-size: 20px;
     font-weight: 500;
   }
@@ -298,7 +341,7 @@ div.scrollbar-inner-bottom {
   position: absolute;
   width: 100%;
   height: 2px;
-  background-color: #FEE70F;
+  background-color: #fee70f;
 }
 
 div.scrollbar-inner-top {

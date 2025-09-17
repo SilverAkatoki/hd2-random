@@ -15,7 +15,7 @@ function detectLocale(): string {
   const langCode = browserLang.split('-')[0];
 
   // 如果支持该语言则返回，否则返回英文
-  // return 'en'
+  // return 'en';
   return SUPPORTED_LOCALES.includes(langCode) ? langCode : 'en';
 }
 

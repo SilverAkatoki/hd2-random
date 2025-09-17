@@ -1,10 +1,10 @@
-import { filename } from "../random-dict/filename";
+import { filename } from '../random-dict/filename';
 import {
   backpack,
   supportWeapon,
   supportWeaponWithBackpack,
-} from "../random-dict/stratagem-type";
-import type { Stratagem } from "../type";
+} from '../random-dict/stratagem-type';
+import type { Stratagem } from '../type';
 
 // Fisher-Yates
 const shuffle = <T>(array: T[]): T[] => {
@@ -19,7 +19,7 @@ const shuffle = <T>(array: T[]): T[] => {
 export const getRandomCombinations = (
   bannedStratagems: string[] = [],
   allowSingleBackpack: boolean = false,
-  allowSingleSupportWeapon: boolean = false,
+  allowSingleSupportWeapon: boolean = false
 ): Stratagem[] => {
   const keys = Object.keys(filename);
   const combinations: Stratagem[] = [];
@@ -66,38 +66,56 @@ export const randomizeSingleStratagem = (
   stratagems: Stratagem[],
   bannedStratagems: string[],
   allowSingleBackpack: boolean,
-  allowSingleSupportWeapon: boolean,
+  allowSingleSupportWeapon: boolean
 ): Stratagem => {
   let newStratagem;
   let attempts = 0;
 
   do {
-    const allCombinations = getRandomCombinations(bannedStratagems, false, false);
-    newStratagem = allCombinations[Math.floor(Math.random() * allCombinations.length)];
+    const allCombinations = getRandomCombinations(
+      bannedStratagems,
+      false,
+      false
+    );
+    newStratagem =
+      allCombinations[Math.floor(Math.random() * allCombinations.length)];
 
     const otherKeys = stratagems
-      .map((item, i) => i !== index ? item.ID : null)
+      .map((item, i) => (i !== index ? item.ID : null))
       .filter(key => key !== null);
 
-    const hasConflict = otherKeys.includes(newStratagem.ID) ||
-      (allowSingleBackpack && hasBackpackConflict(newStratagem.ID, otherKeys)) ||
-      (allowSingleSupportWeapon && hasSupportWeaponConflict(newStratagem.ID, otherKeys));
+    const hasConflict =
+      otherKeys.includes(newStratagem.ID) ||
+      (allowSingleBackpack &&
+        hasBackpackConflict(newStratagem.ID, otherKeys)) ||
+      (allowSingleSupportWeapon &&
+        hasSupportWeaponConflict(newStratagem.ID, otherKeys));
 
     if (!hasConflict) break;
-
   } while (++attempts < 100);
 
   return newStratagem;
 };
 
 const hasBackpackConflict = (newKey: string, otherKeys: string[]): boolean => {
-  const isNewBackpack = backpack.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
-  const hasOtherBackpack = otherKeys.some(key => backpack.includes(key) || supportWeaponWithBackpack.includes(key));
+  const isNewBackpack =
+    backpack.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
+  const hasOtherBackpack = otherKeys.some(
+    key => backpack.includes(key) || supportWeaponWithBackpack.includes(key)
+  );
   return isNewBackpack && hasOtherBackpack;
 };
 
-const hasSupportWeaponConflict = (newKey: string, otherKeys: string[]): boolean => {
-  const isNewSupport = supportWeapon.includes(newKey) || supportWeaponWithBackpack.includes(newKey);
-  const hasOtherSupport = otherKeys.some(key => supportWeapon.includes(key) || supportWeaponWithBackpack.includes(key));
+const hasSupportWeaponConflict = (
+  newKey: string,
+  otherKeys: string[]
+): boolean => {
+  const isNewSupport =
+    supportWeapon.includes(newKey) ||
+    supportWeaponWithBackpack.includes(newKey);
+  const hasOtherSupport = otherKeys.some(
+    key =>
+      supportWeapon.includes(key) || supportWeaponWithBackpack.includes(key)
+  );
   return isNewSupport && hasOtherSupport;
 };

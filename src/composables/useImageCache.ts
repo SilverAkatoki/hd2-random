@@ -35,13 +35,13 @@ const preloadImages = async (): Promise<void> => {
 
 // 获取缓存的图片 URL
 const getCachedImageUrl = (imagePath: string): string => {
-  return keyUrlDict.value[imagePath] || (import.meta.env.BASE_URL + imagePath);
+  return keyUrlDict.value[imagePath] || import.meta.env.BASE_URL + imagePath;
 };
 
 export const useImageCache = () => {
   return {
     preloadImages,
     getCachedImageUrl,
-    isLoaded
+    isLoaded,
   };
 };

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getRandomCombinations, randomizeSingleStratagem } from './utils/liberRandom';
+import {
+  getRandomCombinations,
+  randomizeSingleStratagem,
+} from './utils/liberRandom';
 import { useImageCache } from './composables/useImageCache';
 
 import ToggleButton from './components/ToggleButton.vue';
@@ -10,14 +13,15 @@ import BannedStratagemSelector from './components/BannedStratagemSelector.vue';
 import LiberButton from './components/LiberButton.vue';
 
 const stratagems = ref(getRandomCombinations());
+let bannedStratagems = ref<string[]>([]);
+
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
-const hasEnabledBannedStratagem = ref(false);
 const hasStratagemsError = ref(false);
 
-const lastUpdateDate = ref<string>("2025-09-12");
+const hasEnabledBannedStratagem = ref(false);
 
-let bannedStratagems = ref<string[]>([]);
+const lastUpdateDate = ref<string>('2025-09-12'); // <- 记得改这个 Update this
 
 const { t, locale } = useI18n();
 const currLang = locale.value;
@@ -25,12 +29,22 @@ const currLang = locale.value;
 const { preloadImages, getCachedImageUrl } = useImageCache();
 
 const reRandomizeStratagems = () => {
-  stratagems.value = getRandomCombinations(bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
+  stratagems.value = getRandomCombinations(
+    bannedStratagems.value,
+    allowSingleBackpack.value,
+    allowSingleSupportWeapon.value
+  );
   hasStratagemsError.value = stratagems.value.length < 4;
 };
 
 const reRandomizeSingleStratagem = (index: number) => {
-  stratagems.value[index] = randomizeSingleStratagem(index, stratagems.value, bannedStratagems.value, allowSingleBackpack.value, allowSingleSupportWeapon.value);
+  stratagems.value[index] = randomizeSingleStratagem(
+    index,
+    stratagems.value,
+    bannedStratagems.value,
+    allowSingleBackpack.value,
+    allowSingleSupportWeapon.value
+  );
 };
 
 const closeStratagemSelector = () => {
@@ -41,12 +55,12 @@ const closeStratagemSelector = () => {
 
 onMounted(() => {
   hasStratagemsError.value = stratagems.value.length < 4;
+  document.title = t('app.title');
   preloadImages();
 });
 
 // 更改设置后重新随机
 watch([allowSingleBackpack, allowSingleSupportWeapon], reRandomizeStratagems);
-
 
 // 更改筛选后重新随机
 let previousBannedStratagems: string[] = [];
@@ -56,34 +70,54 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
   } else {
     const hasChanged =
       previousBannedStratagems.length !== bannedStratagems.value.length ||
-      previousBannedStratagems.some(str => !bannedStratagems.value.includes(str));
+      previousBannedStratagems.some(
+        str => !bannedStratagems.value.includes(str)
+      );
     if (hasChanged) {
       reRandomizeStratagems();
     }
   }
 });
-
 </script>
 
 <template>
   <main>
     <transition name="fade">
-      <banned-stratagem-selector v-if="hasEnabledBannedStratagem" @close="hasEnabledBannedStratagem = false"
-        v-model="bannedStratagems" />
+      <banned-stratagem-selector
+        v-if="hasEnabledBannedStratagem"
+        @close="hasEnabledBannedStratagem = false"
+        v-model="bannedStratagems"
+      />
     </transition>
     <div class="top-bar"></div>
-    <div class="main-container" @click="closeStratagemSelector" :class="['main-container', currLang + '-style']"
-      :style='{ "filter": (hasEnabledBannedStratagem ? "brightness(50%)" : "none") }'>
+    <div
+      class="main-container"
+      @click="closeStratagemSelector"
+      :class="['main-container', currLang + '-style']"
+      :style="{
+        filter: hasEnabledBannedStratagem ? 'brightness(50%)' : 'none',
+      }"
+    >
       <div class="sub-container">
         <div class="title-container">
           <div class="title">
-            <img src="/title.svg" style="height: 32px; margin-right: 10px; transform: scaleX(-1);" draggable="false" />
+            <img
+              src="/title.svg"
+              style="height: 32px; margin-right: 10px; transform: scaleX(-1)"
+              draggable="false"
+            />
             <span>{{ t('app.title') }}</span>
-            <img src="/title.svg" style="height: 32px; margin-left: 10px;" draggable="false" />
+            <img
+              src="/title.svg"
+              style="height: 32px; margin-left: 10px"
+              draggable="false"
+            />
           </div>
           <div class="latest-date-container">
-            <span style="color: #aaa; margin-right: 10px;">{{ t('app.updateDateTip') }}</span>
-            <span style="color: white;">{{ lastUpdateDate }}</span>
+            <span style="color: #aaa; margin-right: 10px">{{
+              t('app.updateDateTip')
+            }}</span>
+            <span style="color: white">{{ lastUpdateDate }}</span>
           </div>
         </div>
 
@@ -94,8 +128,12 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
           <div class="settings-container">
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">{{ t('settings.singleBackpack.title') }}</span>
-                <span class="setting-description">{{ t('settings.singleBackpack.description') }}</span>
+                <span class="setting-title">{{
+                  t('settings.singleBackpack.title')
+                }}</span>
+                <span class="setting-description">{{
+                  t('settings.singleBackpack.description')
+                }}</span>
               </div>
               <div class="setting-button-container">
                 <toggle-button v-model="allowSingleBackpack" />
@@ -103,8 +141,12 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
             </div>
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">{{ t('settings.singleSupportWeapon.title') }}</span>
-                <span class="setting-description">{{ t('settings.singleSupportWeapon.description') }}</span>
+                <span class="setting-title">{{
+                  t('settings.singleSupportWeapon.title')
+                }}</span>
+                <span class="setting-description">{{
+                  t('settings.singleSupportWeapon.description')
+                }}</span>
               </div>
               <div class="setting-button-container">
                 <toggle-button v-model="allowSingleSupportWeapon" />
@@ -112,41 +154,64 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
             </div>
             <div class="setting-container">
               <div class="setting-description-container">
-                <span class="setting-title">{{ t('settings.stratagemFilter.title') }}</span>
+                <span class="setting-title">{{
+                  t('settings.stratagemFilter.title')
+                }}</span>
                 <div>
-                  <span class="setting-description">{{ t('settings.stratagemFilter.currentlyBanned') }} </span>
-                  <span class="setting-description" style="color: #FEE70F;"> {{ bannedStratagems.length }} </span>
-                  <span class="setting-description"> {{ t('settings.stratagemFilter.bannedCount') }}</span>
+                  <span class="setting-description"
+                    >{{ t('settings.stratagemFilter.currentlyBanned') }}
+                  </span>
+                  <span class="setting-description" style="color: #fee70f">
+                    {{ bannedStratagems.length }}
+                  </span>
+                  <span class="setting-description">
+                    {{ t('settings.stratagemFilter.bannedCount') }}</span
+                  >
                 </div>
               </div>
               <div class="setting-button-container">
-                <button class="filter-button" @click.stop="hasEnabledBannedStratagem = true">{{
-                  t('settings.stratagemFilter.openButton') }}</button>
+                <button
+                  class="filter-button"
+                  @click.stop="hasEnabledBannedStratagem = true"
+                >
+                  {{ t('settings.stratagemFilter.openButton') }}
+                </button>
               </div>
             </div>
           </div>
         </div>
         <div class="stratagems-outer-container">
           <div v-if="hasStratagemsError" class="error-message-container">
-            <div class="error-text">{{ t('settings.stratagemFilter.lackingStratagemErrorInfo') }}</div>
+            <div class="error-text">
+              {{ t('settings.stratagemFilter.lackingStratagemErrorInfo') }}
+            </div>
           </div>
           <div v-else class="stratagems-inner-container">
-            <stratagem v-for="(item, index) in stratagems" :imageSrc="getCachedImageUrl('stratagems/' + item.imgSrc)"
-              :text="t(`stratagems.${item.ID}`)" :index="index" @click="reRandomizeSingleStratagem" />
+            <stratagem
+              v-for="(item, index) in stratagems"
+              :imageSrc="getCachedImageUrl('stratagems/' + item.imgSrc)"
+              :text="t(`stratagems.${item.ID}`)"
+              :index="index"
+              @click="reRandomizeSingleStratagem"
+            />
           </div>
         </div>
         <div class="random-button-container">
           <div>
-            <liber-button colorA="#A1920B" colorB="#FEE70F" :disabled="hasStratagemsError"
-              @click="reRandomizeStratagems">
+            <liber-button
+              colorA="#A1920B"
+              colorB="#FEE70F"
+              :disabled="hasStratagemsError"
+              @click="reRandomizeStratagems"
+            >
               <div class="random-button-inner">
                 <span>{{ t('app.randomizeAll') }}</span>
-                <img src="/dice.png" style="height: 24px; margin-left: 10px;" />
+                <img src="/dice.png" style="height: 24px; margin-left: 10px" />
               </div>
             </liber-button>
           </div>
-          <div v-if="!hasStratagemsError" style="user-select: none;">
-            <span style="color: white;">{{ t('app.clickToRandomize') }}</span>
+          <div v-if="!hasStratagemsError" style="user-select: none">
+            <span style="color: white">{{ t('app.clickToRandomize') }}</span>
           </div>
         </div>
       </div>
@@ -158,15 +223,15 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
 <style scoped lang="css">
 div.main-container.en-style {
   div.title-container {
-    >div.title {
-      >span {
+    > div.title {
+      > span {
         font-size: 26px;
       }
     }
   }
 
   div.random-button-inner {
-    >span {
+    > span {
       font-size: 16px;
     }
   }
@@ -217,11 +282,11 @@ div.main-container::before {
 
 div.sub-container {
   width: 40%;
-  height: 90%;
+  height: 85%;
   background-color: rgba(0, 0, 0, 0.6);
   border: 2px solid #333;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -242,10 +307,10 @@ div.rules-title-container {
   height: 24px;
   background-color: #333;
 
-  >span.rules-title {
+  > span.rules-title {
     margin-left: 20px;
     font-size: 16px;
-    color: #FDFDFD;
+    color: #fdfdfd;
     translate: 0 -1px;
     letter-spacing: 1px;
   }
@@ -253,16 +318,17 @@ div.rules-title-container {
 
 div.title-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   margin-top: 20px;
+  gap: 10px;
 
-  >div.title {
-    >span {
+  > div.title {
+    display: flex;
+    > span {
       font-size: 32px;
       font-weight: bold;
-      color: #FEE70F;
+      color: #fee70f;
       user-select: none;
     }
   }
@@ -280,7 +346,7 @@ div.setting-container {
   width: 100%;
   height: 75px;
   align-items: center;
-  background-color: #0C0C0C;
+  background-color: #0c0c0c;
   border-bottom: 2px solid #222;
 }
 
@@ -301,13 +367,13 @@ div.setting-button-container {
 
 span.setting-title {
   font-size: 18px;
-  color: #FDFDFD;
+  color: #fdfdfd;
   letter-spacing: 1px;
 }
 
 span.setting-description {
   font-size: 14px;
-  color: #AAAAAA;
+  color: #aaaaaa;
   margin-top: 4px;
   letter-spacing: 0.5px;
 }
@@ -322,37 +388,31 @@ button.filter-button {
   background: none;
   border: 2px solid #333;
 
-  color: #FDFDFD;
+  color: #fdfdfd;
   font-style: medium;
 
   transition: all 0.2s ease;
 }
 
-button.filter-button:hover:not(:disabled) {
-  background-color: #211F06;
-  border-color: #FEE70F;
+button.filter-button:hover {
+  background-color: #211f06;
+  border-color: #fee70f;
   box-shadow: 0 0 15px 5px rgba(254, 231, 15, 0.35);
-  color: #FEE70F;
-}
-
-button.filter-button:disabled {
-  border-color: #555;
-  color: #555;
-  cursor: not-allowed;
+  color: #fee70f;
 }
 
 div.stratagems-outer-container {
   margin-top: 10px;
   width: 85%;
   height: 28%;
-  background-image: url(/stripes_gray.svg);
+  background-image: url(/stripes_background.svg);
   background-size: 250%;
 
   display: flex;
   align-items: top;
   justify-content: center;
 
-  >div.stratagems-inner-container {
+  > div.stratagems-inner-container {
     margin-top: 25px;
     display: flex;
     flex-direction: row;
@@ -394,20 +454,6 @@ div.random-button-container {
   gap: 12px;
 }
 
-div.random-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-color: #282302;
-  background-image: url(/stripes_gray.svg);
-  background-size: 500%;
-  background-blend-mode: multiply;
-  /* 弄到伪类里就能用 transform 转了 */
-  transform: scaleX(-1);
-  transition: none;
-}
-
 div.random-button-inner {
   width: 100%;
   height: 100%;
@@ -419,17 +465,17 @@ div.random-button-inner {
 
   position: relative;
 
-  >span {
+  > span {
     user-select: none;
     margin-left: 20px;
-    color: #FEE70F;
+    color: #fee70f;
     font-size: 20px;
     letter-spacing: 1px;
 
     font-weight: 500;
   }
 
-  >img {
+  > img {
     user-select: none;
     height: 24px;
     margin-left: auto;
@@ -437,11 +483,11 @@ div.random-button-inner {
   }
 }
 
-.fade-enter-active {
+transition.fade-enter-active {
   transition: opacity 0.1s ease;
 }
 
-.fade-enter-from {
+transition.fade-enter-from {
   opacity: 0;
 }
 </style>

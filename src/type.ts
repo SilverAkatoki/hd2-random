@@ -4,4 +4,4 @@ export interface Stratagem {
   ID: string;
   imgSrc: string;
   text?: string;
-};
+}

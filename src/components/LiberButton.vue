@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{
-  colorA: string,
-  colorB: string,
-  disabled?: boolean
+  colorA: string;
+  colorB: string;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits(['click']);
@@ -15,10 +15,15 @@ const onClick = () => {
 </script>
 
 <template>
-  <div class="liber-button" :class="{ disabled }" :style="{
-    '--color-a': colorA,
-    '--color-b': colorB
-  }" @click="onClick">
+  <div
+    class="liber-button"
+    :class="{ disabled }"
+    :style="{
+      '--color-a': colorA,
+      '--color-b': colorB,
+    }"
+    @click="onClick"
+  >
     <div class="slot-content">
       <slot />
     </div>
@@ -28,8 +33,6 @@ const onClick = () => {
     <div class="corner bottom-right"></div>
   </div>
 </template>
-
-
 
 <style scoped lang="css">
 div.liber-button.disabled {
@@ -52,12 +55,12 @@ div.liber-button {
   position: relative;
   overflow: hidden;
 
-  >* {
+  > * {
     position: relative;
     z-index: 1;
   }
 
-  >div.corner {
+  > div.corner {
     position: absolute;
     width: 5px;
     height: 5px;
@@ -67,28 +70,28 @@ div.liber-button {
     transition: all 0.2s ease;
   }
 
-  >div.corner.top-left {
+  > div.corner.top-left {
     top: -2px;
     left: -2px;
     border-bottom: none;
     border-right: none;
   }
 
-  >div.corner.top-right {
+  > div.corner.top-right {
     top: -2px;
     right: -2px;
     border-bottom: none;
     border-left: none;
   }
 
-  >div.corner.bottom-left {
+  > div.corner.bottom-left {
     bottom: -2px;
     left: -2px;
     border-top: none;
     border-right: none;
   }
 
-  >div.corner.bottom-right {
+  > div.corner.bottom-right {
     bottom: -2px;
     right: -2px;
     border-top: none;
@@ -107,7 +110,7 @@ div.liber-button::before {
   inset: 0;
   z-index: 0;
   background-color: #252525;
-  background-image: url(/stripes_gray.svg);
+  background-image: url(/stripes_background.svg);
   background-size: 500%;
   background-blend-mode: multiply;
   transform: scaleX(-1);
@@ -120,7 +123,7 @@ div.liber-button:hover {
   border-color: var(--color-b);
   box-shadow: 0 0 15px 5px var(--color-b);
 
-  >div.corner {
+  > div.corner {
     width: 30px;
     height: 20px;
     border-color: var(--color-b);

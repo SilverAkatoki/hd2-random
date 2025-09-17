@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  imageSrc: string,
-  text?: string,
-  index?: number,
+  imageSrc: string;
+  text?: string;
+  index?: number;
 }>();
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits(['click']);
 </script>
 
 <template>
@@ -31,10 +31,9 @@ div.stratagem {
   box-sizing: border-box;
   cursor: pointer;
 
-
   transition: all 0.2s ease;
 
-  >div.img-container {
+  > div.img-container {
     width: 100%;
     height: auto;
     display: flex;
@@ -48,34 +47,33 @@ div.stratagem {
 
     position: relative;
 
-    >img {
+    > img {
       user-select: none;
-
     }
 
-    >div.top,
-    >div.bottom {
+    > div.top,
+    > div.bottom {
       box-sizing: border-box;
       width: 100%;
       height: 30%;
       background: none;
-      border: #7B7B7B solid 3px;
+      border: #7b7b7b solid 3px;
       z-index: 2;
       position: absolute;
     }
 
-    >div.top {
+    > div.top {
       top: 0;
       border-bottom: none;
     }
 
-    >div.bottom {
+    > div.bottom {
       bottom: 0;
       border-top: none;
     }
   }
 
-  >p {
+  > p {
     margin-top: 8px;
     user-select: none;
     text-align: center;
@@ -84,11 +82,11 @@ div.stratagem {
 }
 
 div.stratagem:hover {
-  >div.img-container {
+  > div.img-container {
     background-color: #383838c8;
 
-    >div.top,
-    >div.bottom {
+    > div.top,
+    > div.bottom {
       border-color: white;
     }
   }

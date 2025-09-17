@@ -1,30 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const model = defineModel<boolean>({ required: true });
 
-function toggle(val: boolean): void {
+const toggle = (val: boolean): void => {
   model.value = val;
-}
+};
 
 const hoverLeft = ref(false);
 const hoverRight = ref(false);
-
 </script>
 
 <template>
   <div class="toggle-btn">
     <div class="click-overlay">
-      <div class="click-area left" @click="toggle(true)" @mouseover="hoverLeft = true" @mouseleave="hoverLeft = false">
-      </div>
-      <div class="click-area right" @click="toggle(false)" @mouseover="hoverRight = true"
-        @mouseleave="hoverRight = false"></div>
+      <div
+        class="click-area left"
+        @click="toggle(true)"
+        @mouseover="hoverLeft = true"
+        @mouseleave="hoverLeft = false"
+      ></div>
+      <div
+        class="click-area right"
+        @click="toggle(false)"
+        @mouseover="hoverRight = true"
+        @mouseleave="hoverRight = false"
+      ></div>
     </div>
     <div class="toggle-controls">
-      <button class="arrow-btn arrow-left" :class="{ 'hovered': hoverLeft }">
+      <button class="arrow-btn arrow-left" :class="{ hovered: hoverLeft }">
         <svg width="40" height="40" viewBox="0 0 40 40">
           <polygon points="33,10 15,20 33,30" fill="currentColor" />
         </svg>
@@ -36,7 +43,7 @@ const hoverRight = ref(false);
           <div :class="['option', !model ? 'active' : '']" />
         </div>
       </div>
-      <button class="arrow-btn arrow-right" :class="{ 'hovered': hoverRight }">
+      <button class="arrow-btn arrow-right" :class="{ hovered: hoverRight }">
         <svg width="40" height="40" viewBox="0 0 40 40">
           <polygon points="7,30 25,20 7,10" fill="currentColor" />
         </svg>
@@ -76,7 +83,7 @@ const hoverRight = ref(false);
 }
 
 .arrow-btn.hovered {
-  color: #FEE70F;
+  color: #fee70f;
 }
 
 .arrow-btn:disabled {
@@ -94,7 +101,7 @@ const hoverRight = ref(false);
 .value {
   margin: 0 16px;
   font-size: 18px;
-  color: #B9B9B9;
+  color: #b9b9b9;
   font-weight: medium;
 }
 
@@ -112,11 +119,13 @@ const hoverRight = ref(false);
   justify-content: center;
   color: #888;
   font-size: 15px;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .option.active {
-  background: #DDD;
+  background: #ddd;
   color: #fff;
   box-shadow: 0 2px 8px rgba(64, 158, 255, 0.15);
 }
