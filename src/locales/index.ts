@@ -1,10 +1,10 @@
 // 语言包导入
-import zh from "./zh";
 import en from "./en";
+import zh from "./zh";
 
 export const messages = {
   zh,
-  en,
+  en
 };
 
 export type MessageSchema = typeof zh;

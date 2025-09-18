@@ -1,4 +1,5 @@
 import { createI18n } from "vue-i18n";
+
 import { messages } from "../locales";
 
 // 支持的语言列表
@@ -26,5 +27,5 @@ export const i18n = createI18n({
   legacy: false,
   locale: detectLocale(),
   fallbackLocale: "en",
-  messages,
+  messages
 });

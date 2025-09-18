@@ -8,18 +8,18 @@ const en: MessageSchema = {
       "Click stratagem icons to randomize individual stratagems",
     yes: "Yes",
     no: "No",
-    updateDateTip: "Last update at",
+    updateDateTip: "Last update at"
   },
   settings: {
     title: "Restrictions",
     singleBackpack: {
       title: "Allow only one backpack",
       description:
-        "Includes backpack stratagems and support weapons with ammo packs",
+        "Includes backpack stratagems and support weapons with ammo packs"
     },
     singleSupportWeapon: {
       title: "Allow only one support weapon",
-      description: 'Also known as the "third slot"',
+      description: "Also known as the \"third slot\""
     },
     stratagemFilter: {
       title: "Stratagem Filter Menu",
@@ -27,8 +27,8 @@ const en: MessageSchema = {
       openButton: "Open",
       currentlyBanned: "Excluded count: ",
       lackingStratagemErrorInfo:
-        "Unable to generate enough stratagem combinations, please modify filter's setting",
-    },
+        "Unable to generate enough stratagem combinations, please modify filter's setting"
+    }
   },
   stratagemSelector: {
     title: "Stratagem Selection Menu",
@@ -37,7 +37,7 @@ const en: MessageSchema = {
     defense: "Defensive",
     reset: "Reset",
     confirm: "Confirm",
-    tooFewStratagemAlert: "Too few available stratagems!",
+    tooFewStratagemAlert: "Too few available stratagems!"
   },
   stratagems: {
     ad334guarddog: "Guard Dog",
@@ -114,8 +114,8 @@ const en: MessageSchema = {
     orbitalwalkingbarrage: "Orbital Walking Barrage",
     speargun: "Spear Gun",
     solosilo: "Solo Silo",
-    eat700expendablenapalm: "Expendable Napalm",
-  },
+    eat700expendablenapalm: "Expendable Napalm"
+  }
 };
 
 export default en;

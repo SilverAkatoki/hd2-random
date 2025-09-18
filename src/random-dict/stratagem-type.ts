@@ -10,7 +10,7 @@ export const backpack: readonly string[] = [
   "sh20ballisticshieldbackpack",
   "sh20shieldgeneratorpack",
   "sh51directionalshield",
-  "warppack",
+  "warppack"
 ];
 
 export const supportWeapon: readonly string[] = [
@@ -34,7 +34,7 @@ export const supportWeapon: readonly string[] = [
   "rl77airburstrocketlauncher",
   "rs422railgun",
   "tx41sterilizer",
-  "wasplauncher",
+  "wasplauncher"
 ];
 
 export const supportWeaponWithBackpack: readonly string[] = [
@@ -42,20 +42,20 @@ export const supportWeaponWithBackpack: readonly string[] = [
   "faf14spear",
   "gr8recoillessrifle",
   "rl77airburstrocketlauncher",
-  "wasplauncher",
+  "wasplauncher"
 ];
 
 export const vehicle: readonly string[] = [
   "exo45patriotexosuit",
   "exo49emancipatorexosuit",
-  "fastreconvehicle",
+  "fastreconvehicle"
 ];
 
 export const mine: readonly string[] = [
   "antipersonnelminefield",
   "antitankmines",
   "gasmines",
-  "incendiarymines",
+  "incendiarymines"
 ];
 
 export const attack: readonly string[] = [
@@ -77,7 +77,7 @@ export const attack: readonly string[] = [
   "orbitalprecisionstrike",
   "orbitalrailcannonstrike",
   "orbitalsmokestrike",
-  "orbitalwalkingbarrage",
+  "orbitalwalkingbarrage"
 ];
 
 export const support: readonly string[] = [
@@ -118,7 +118,7 @@ export const support: readonly string[] = [
   "wasplauncher",
   "exo45patriotexosuit",
   "exo49emancipatorexosuit",
-  "fastreconvehicle",
+  "fastreconvehicle"
 ];
 
 export const defense: readonly string[] = [
@@ -139,5 +139,5 @@ export const defense: readonly string[] = [
   "rocketsentry",
   "shieldgeneratorrelay",
   "teslatower",
-  "solosilo",
+  "solosilo"
 ];

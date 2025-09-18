@@ -1,4 +1,5 @@
 import { ref } from "vue";
+
 import { filename } from "@/random-dict/filename";
 
 const keyUrlDict = ref<Record<string, string>>({});
@@ -24,6 +25,7 @@ const preloadImages = async (): Promise<void> => {
       const blobUrl = URL.createObjectURL(blob);
       keyUrlDict.value[imagePath] = blobUrl;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`预加载图片时出现错误：${imagePath}`, error);
       // 如果加载失败，使用原始路径作为回退
       keyUrlDict.value[imagePath] = fullUrl;
@@ -42,6 +44,6 @@ export const useImageCache = () => {
   return {
     preloadImages,
     getCachedImageUrl,
-    isLoaded,
+    isLoaded
   };
 };

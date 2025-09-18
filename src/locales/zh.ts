@@ -5,25 +5,25 @@ const zh = {
     clickToRandomize: "点击战备图标以进行单个战备的随机",
     yes: "是",
     no: "否",
-    updateDateTip: "上一次更新日期",
+    updateDateTip: "上一次更新日期"
   },
   settings: {
     title: "限制条件",
     singleBackpack: {
       title: "只允许占据一个背包位",
-      description: "包括背包战备与包含弹药背包的支援武器",
+      description: "包括背包战备与包含弹药背包的支援武器"
     },
     singleSupportWeapon: {
       title: "只允许一个支援武器战备",
-      description: "也就是常说的「三号位」",
+      description: "也就是常说的「三号位」"
     },
     stratagemFilter: {
       title: "战备过滤菜单",
       bannedCount: "个战备",
       openButton: "打开",
       currentlyBanned: "当前已在随机结果中排除",
-      lackingStratagemErrorInfo: "无法生成足够的战备组合，请修改筛选器设置",
-    },
+      lackingStratagemErrorInfo: "无法生成足够的战备组合，请修改筛选器设置"
+    }
   },
   stratagemSelector: {
     title: "战备选择菜单",
@@ -32,7 +32,7 @@ const zh = {
     defense: "防御",
     reset: "重置",
     confirm: "确认",
-    tooFewStratagemAlert: "可用战备过少！",
+    tooFewStratagemAlert: "可用战备过少！"
   },
   stratagems: {
     ad334guarddog: "「护卫犬」",
@@ -109,8 +109,8 @@ const zh = {
     orbitalwalkingbarrage: "轨道游走火力网",
     speargun: "矛枪",
     solosilo: "单兵导弹发射井",
-    eat700expendablenapalm: "消耗性凝固汽油弹",
-  },
+    eat700expendablenapalm: "消耗性凝固汽油弹"
+  }
 };
 
 export default zh;

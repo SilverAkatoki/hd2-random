@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { useI18n } from "vue-i18n";
-import {
-  getRandomCombinations,
-  randomizeSingleStratagem,
-} from "../utils/liberRandom";
-import { useImageCache } from "../composables/useImageCache";
 
-import ToggleButton from "@/components/ToggleButton.vue";
-import Stratagem from "@/components/Stratagem.vue";
+import { useI18n } from "vue-i18n";
+
+
 import BannedStratagemSelector from "@/components/BannedStratagemSelector/index.vue";
 import LiberButton from "@/components/LiberButton.vue";
+import Stratagem from "@/components/Stratagem.vue";
+import ToggleButton from "@/components/ToggleButton.vue";
+
+import { useImageCache } from "../composables/useImageCache";
+import {
+  getRandomCombinations,
+  randomizeSingleStratagem
+} from "../utils/liberRandom";
 
 const stratagems = ref(getRandomCombinations());
-let bannedStratagems = ref<string[]>([]);
+const bannedStratagems = ref<string[]>([]);
 
 const allowSingleBackpack = ref(false);
 const allowSingleSupportWeapon = ref(false);
@@ -85,18 +88,18 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
     <transition name="fade">
       <banned-stratagem-selector
         v-if="hasEnabledBannedStratagem"
-        @close="hasEnabledBannedStratagem = false"
         v-model="bannedStratagems"
+        @close="hasEnabledBannedStratagem = false"
       />
     </transition>
     <div class="top-bar" />
     <div
       class="main-container"
-      @click="closeStratagemSelector"
       :class="['main-container', currLang + '-style']"
       :style="{
         filter: hasEnabledBannedStratagem ? 'brightness(50%)' : 'none',
       }"
+      @click="closeStratagemSelector"
     >
       <div class="sub-container">
         <div class="title-container">
@@ -105,13 +108,13 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
               src="/title.svg"
               style="height: 32px; margin-right: 10px; transform: scaleX(-1)"
               draggable="false"
-            />
+            >
             <span>{{ t("app.title") }}</span>
             <img
               src="/title.svg"
               style="height: 32px; margin-left: 10px"
               draggable="false"
-            />
+            >
           </div>
           <div class="latest-date-container">
             <span style="color: #aaa; margin-right: 10px">{{
@@ -158,8 +161,7 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
                   t("settings.stratagemFilter.title")
                 }}</span>
                 <div>
-                  <span class="setting-description"
-                    >{{ t("settings.stratagemFilter.currentlyBanned") }}
+                  <span class="setting-description">{{ t("settings.stratagemFilter.currentlyBanned") }}
                   </span>
                   <span class="setting-description" style="color: #fee70f">
                     {{ bannedStratagems.length }}
@@ -189,6 +191,7 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
           <div v-else class="stratagems-inner-container">
             <stratagem
               v-for="(item, index) in stratagems"
+              :key="item.ID"
               :image-src="getCachedImageUrl('stratagems/' + item.imgSrc)"
               :text="t(`stratagems.${item.ID}`)"
               :index="index"
@@ -206,7 +209,7 @@ watch(hasEnabledBannedStratagem, (x: boolean) => {
             >
               <div class="random-button-inner">
                 <span>{{ t("app.randomizeAll") }}</span>
-                <img src="/dice.png" style="height: 24px; margin-left: 10px" />
+                <img src="/dice.png" style="height: 24px; margin-left: 10px">
               </div>
             </liber-button>
           </div>

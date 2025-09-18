@@ -2,8 +2,9 @@ import { filename } from "../random-dict/filename";
 import {
   backpack,
   supportWeapon,
-  supportWeaponWithBackpack,
+  supportWeaponWithBackpack
 } from "../random-dict/stratagem-type";
+
 import type { Stratagem } from "../type";
 
 // Fisher-Yates
@@ -18,8 +19,8 @@ const shuffle = <T>(array: T[]): T[] => {
 
 export const getRandomCombinations = (
   bannedStratagems: string[] = [],
-  allowSingleBackpack: boolean = false,
-  allowSingleSupportWeapon: boolean = false
+  allowSingleBackpack = false,
+  allowSingleSupportWeapon = false
 ): Stratagem[] => {
   const keys = Object.keys(filename);
   const combinations: Stratagem[] = [];
@@ -54,7 +55,7 @@ export const getRandomCombinations = (
 
     combinations.push({
       ID: key,
-      imgSrc: filename[key],
+      imgSrc: filename[key]
     });
   }
 

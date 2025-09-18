@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
+
 import { useI18n } from "vue-i18n";
-import Stratagem from "@/components/Stratagem.vue";
-import { attack, defense, support } from "@/random-dict/stratagem-type";
-import { filename } from "@/random-dict/filename";
-import { useImageCache } from "@/composables/useImageCache";
 
 import LiberButton from "@/components/LiberButton.vue";
-import { ref, onMounted } from "vue";
+import Stratagem from "@/components/Stratagem.vue";
+import { useImageCache } from "@/composables/useImageCache";
+import { filename } from "@/random-dict/filename";
+import { attack, defense, support } from "@/random-dict/stratagem-type";
 import { type Option } from "@/type";
 
 const bannedStratagems = defineModel<string[]>({ default: [] });
@@ -27,7 +28,9 @@ const stratagemListsContainer = ref<Option<HTMLElement>>(null);
 const scrollbarInner = ref<Option<HTMLElement>>(null);
 
 const updateScrollbar = () => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const container: HTMLElement = stratagemListsContainer.value!;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const inner: HTMLElement = scrollbarInner.value!;
 
   const scrollTop = container.scrollTop;
@@ -53,8 +56,8 @@ onMounted(() => {
 <template>
   <div
     class="banned-stratagem-selector"
-    @click.right.prevent="emit('close')"
     :class="['banned-stratagem-selector', currLang + '-style']"
+    @click.right.prevent="emit('close')"
   >
     <div class="title-container">
       <span>{{ t("stratagemSelector.title") }}</span>
@@ -62,8 +65,8 @@ onMounted(() => {
 
     <div class="stratagem-lists">
       <div
-        class="stratagem-lists-container"
         ref="stratagemListsContainer"
+        class="stratagem-lists-container"
         @scroll="updateScrollbar"
       >
         <div class="stratagem-list">
@@ -72,7 +75,7 @@ onMounted(() => {
             <Stratagem
               v-for="(key, idx) in attack"
               :key="key"
-              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :image-src="getCachedImageUrl('stratagems/' + filename[key])"
               :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }"
               @click="toggleBan(key)"
@@ -85,7 +88,7 @@ onMounted(() => {
             <Stratagem
               v-for="(key, idx) in support"
               :key="key"
-              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :image-src="getCachedImageUrl('stratagems/' + filename[key])"
               :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }"
               @click="toggleBan(key)"
@@ -98,7 +101,7 @@ onMounted(() => {
             <Stratagem
               v-for="(key, idx) in defense"
               :key="key"
-              :imageSrc="getCachedImageUrl('stratagems/' + filename[key])"
+              :image-src="getCachedImageUrl('stratagems/' + filename[key])"
               :index="idx"
               :class="{ banned: bannedStratagems.includes(key) }"
               @click="toggleBan(key)"
@@ -107,7 +110,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="scrollbar-outer">
-        <div class="scrollbar-inner" ref="scrollbarInner">
+        <div ref="scrollbarInner" class="scrollbar-inner">
           <div class="scrollbar-inner-top" />
           <div class="scrollbar-inner-bottom" />
         </div>
@@ -116,17 +119,17 @@ onMounted(() => {
 
     <div class="bottom-container">
       <liber-button
-        colorA="#D5D5D5"
-        colorB="#CBCBCE"
-        @click="bannedStratagems = []"
+        color-a="#D5D5D5"
+        color-b="#CBCBCE"
         :disabled="bannedStratagems.length === 0"
+        @click="bannedStratagems = []"
       >
         <div class="liber-button-inner">
-          <img src="/reset.svg" style="margin: 0 0 0 20px" />
+          <img src="/reset.svg" style="margin: 0 0 0 20px">
           <span class="right">{{ t("stratagemSelector.reset") }}</span>
         </div>
       </liber-button>
-      <liber-button colorA="#D5D5D5" colorB="#CBCBCE" @click="emit('close')">
+      <liber-button color-a="#D5D5D5" color-b="#CBCBCE" @click="emit('close')">
         <div class="liber-button-inner">
           <span class="left">✓</span>
           <span class="right">{{ t("stratagemSelector.confirm") }}</span>

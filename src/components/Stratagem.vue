@@ -12,7 +12,7 @@ const emit = defineEmits(["click"]);
   <div class="stratagem" @click="emit('click', index)">
     <div class="img-container">
       <div class="top" />
-      <img :src="imageSrc" alt="stratagem image" draggable="false" />
+      <img :src="imageSrc" alt="stratagem image" draggable="false">
       <div class="bottom" />
     </div>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -22,13 +23,13 @@ const hoverRight = ref(false);
         @click="toggle(true)"
         @mouseover="hoverLeft = true"
         @mouseleave="hoverLeft = false"
-      ></div>
+      />
       <div
         class="click-area right"
         @click="toggle(false)"
         @mouseover="hoverRight = true"
         @mouseleave="hoverRight = false"
-      ></div>
+      />
     </div>
     <div class="toggle-controls">
       <button class="arrow-button arrow-left" :class="{ hovered: hoverLeft }">
