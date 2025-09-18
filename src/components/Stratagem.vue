@@ -5,7 +5,7 @@ defineProps<{
   index?: number;
 }>();
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 </script>
 
 <template>

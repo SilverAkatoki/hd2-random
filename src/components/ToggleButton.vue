@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
@@ -37,7 +37,7 @@ const hoverRight = ref(false);
         </svg>
       </button>
       <div class="description">
-        <span class="value">{{ model ? t('app.yes') : t('app.no') }}</span>
+        <span class="value">{{ model ? t("app.yes") : t("app.no") }}</span>
         <div class="options">
           <div :class="['option', model ? 'active' : '']" />
           <div :class="['option', !model ? 'active' : '']" />

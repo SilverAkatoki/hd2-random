@@ -1,5 +1,5 @@
-import { ref } from 'vue';
-import { filename } from '../random-dict/filename';
+import { ref } from "vue";
+import { filename } from "@/random-dict/filename";
 
 const keyUrlDict = ref<Record<string, string>>({});
 const isLoaded = ref(false);

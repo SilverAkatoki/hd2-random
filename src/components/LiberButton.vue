@@ -5,11 +5,11 @@ const props = defineProps<{
   disabled?: boolean;
 }>();
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 
 const onClick = () => {
   if (!props.disabled) {
-    emit('click');
+    emit("click");
   }
 };
 </script>
@@ -105,7 +105,7 @@ div.liber-button {
 }
 
 div.liber-button::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 0;

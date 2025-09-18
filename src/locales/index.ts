@@ -1,6 +1,6 @@
 // 语言包导入
-import zh from './zh';
-import en from './en';
+import zh from "./zh";
+import en from "./en";
 
 export const messages = {
   zh,
