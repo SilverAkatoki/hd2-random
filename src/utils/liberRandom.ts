@@ -69,7 +69,7 @@ export const randomizeSingleStratagem = (
   allowSingleBackpack: boolean,
   allowSingleSupportWeapon: boolean
 ): Stratagem => {
-  let newStratagem;
+  let newStratagem: Stratagem;
   let attempts = 0;
 
   do {

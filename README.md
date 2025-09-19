@@ -10,7 +10,7 @@
 
 ## 注明
 
-战备的 svg 图形来自 [Helldivers Wiki](https://helldivers.wiki.gg/)  
+战备的 svg 图形来自 [Helldivers-2-Stratagems-icons-svg](https://github.com/nvigneux/Helldivers-2-Stratagems-icons-svg)
 名称取自游戏内文本，部分经由本人润色与删改
 
 ## 鸣谢
